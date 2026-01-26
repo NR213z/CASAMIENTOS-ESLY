@@ -13,26 +13,26 @@ const Contact = () => {
                         <form className="space-y-6">
                             <div>
                                 <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Nombre</label>
-                                <input type="text" className="w-full p-3 bg-charcoal border border-charcoal focus:border-gold text-white outline-none transition-colors" />
+                                <input type="text" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
                             </div>
                             <div>
                                 <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Correo Electrónico</label>
-                                <input type="email" className="w-full p-3 bg-charcoal border border-charcoal focus:border-gold text-white outline-none transition-colors" />
+                                <input type="email" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
                             </div>
                             <div>
                                 <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Teléfono</label>
-                                <input type="tel" className="w-full p-3 bg-charcoal border border-charcoal focus:border-gold text-white outline-none transition-colors" />
+                                <input type="tel" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
                             </div>
                             <div>
                                 <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Mensaje</label>
-                                <textarea rows="4" className="w-full p-3 bg-charcoal border border-charcoal focus:border-gold text-white outline-none transition-colors"></textarea>
+                                <textarea rows="4" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors"></textarea>
                             </div>
                             <button type="submit" className="btn btn-gold w-full">Enviar Mensaje</button>
                         </form>
                     </div>
 
                     {/* Info */}
-                    <div className="w-full lg:w-1/2 flex flex-col justify-between">
+                    <div className="w-full lg:w-1/2 flex flex-col gap-12">
                         <div>
                             <h3 className="text-2xl font-serif mb-6 text-gold-light">Hablemos de tu evento</h3>
                             <p className="text-off-white mb-8 font-light leading-relaxed">
