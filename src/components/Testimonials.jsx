@@ -31,13 +31,13 @@ const Testimonials = () => {
                 <h2 className="mb-12">Testimonios</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {testimonials.map((t, index) => (
-                        <div key={index} className="p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div key={index} className="card hover-lift text-left">
                             <div className="flex justify-center mb-4 text-gold">
-                                {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                                {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
                             </div>
-                            <p className="italic text-text-light mb-6">"{t.text}"</p>
-                            <h4 className="font-serif font-bold text-dark">{t.name}</h4>
-                            <span className="text-xs text-text-light uppercase tracking-widest">{t.date}</span>
+                            <p className="italic text-text-light mb-6 text-center">"{t.text}"</p>
+                            <h4 className="font-serif font-bold text-dark text-center">{t.name}</h4>
+                            <span className="text-xs text-text-light uppercase tracking-widest block text-center">{t.date}</span>
                         </div>
                     ))}
                 </div>

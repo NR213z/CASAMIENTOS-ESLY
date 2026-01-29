@@ -16,20 +16,22 @@ const Hero = () => {
             </div>
 
             {/* Content */}
-            <div className="relative z-20 px-4 fade-in">
-                <h2 className="text-xl md:text-2xl tracking-[0.3em] uppercase mb-4 text-gold-light">
+            <div className="relative z-20 px-4">
+                <h2 className="text-xl md:text-2xl tracking-[0.3em] uppercase mb-4 text-gold-light fade-in-up stagger-1">
                     Romina Ferraretto
                 </h2>
-                <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight">
+                <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight fade-in-up stagger-2">
                     Experiencias <br />
-                    <span className="italic text-gold">Inolvidables</span>
+                    <span className="italic gradient-text">Inolvidables</span>
                 </h1>
-                <p className="max-w-2xl mx-auto text-lg md:text-xl font-light mb-10 text-off-white">
+                <p className="max-w-2xl mx-auto text-lg md:text-xl font-light mb-10 text-off-white fade-in-up stagger-3">
                     Organización integral de eventos sociales y corporativos extraordinarios.
                 </p>
-                <a href="#contact" className="btn btn-gold">
-                    Contactanos
-                </a>
+                <div className="fade-in-up stagger-4">
+                    <a href="#contact" className="btn btn-gold">
+                        Contactanos
+                    </a>
+                </div>
             </div>
         </section>
     );

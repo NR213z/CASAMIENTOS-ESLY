@@ -7,12 +7,12 @@ const About = () => {
                 <div className="flex flex-col md:flex-row items-center gap-12">
                     {/* Image */}
                     <div className="w-full md:w-1/2">
-                        <div className="relative">
+                        <div className="relative image-overlay">
                             <div className="absolute top-4 left-4 w-full h-full border-2 border-gold -z-10"></div>
                             <img
                                 src="/about_img.png"
                                 alt="Romina Ferraretto"
-                                className="w-full h-auto shadow-xl"
+                                className="w-full h-auto rounded-lg shadow-xl"
                             />
                         </div>
                     </div>

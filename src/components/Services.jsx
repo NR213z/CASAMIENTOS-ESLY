@@ -25,8 +25,8 @@ const Services = () => {
                             <p className="text-text-light mb-8">Hacemos de tu evento un momento inolvidable. Creamos recuerdos únicos con una celebración llena de alegría, música y diversión.</p>
                             <div className="grid grid-cols-1 gap-6">
                                 {socialServices.map((service) => (
-                                    <div key={service.title} className="flex items-start gap-4 p-4 border border-gray-200 hover:border-gold transition-colors bg-white shadow-sm">
-                                        <div className="text-gold mt-1"><service.icon size={24} /></div>
+                                    <div key={service.title} className="card hover-lift flex items-start gap-4">
+                                        <div className="text-gold mt-1"><service.icon size={28} /></div>
                                         <div>
                                             <h4 className="font-serif text-lg mb-2">{service.title}</h4>
                                             <p className="text-sm text-text-light">{service.desc}</p>
@@ -35,8 +35,8 @@ const Services = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="w-full md:w-1/2 order-1 md:order-2">
-                            <img src="/services_social.png" alt="Eventos Sociales" className="w-full h-auto shadow-xl" />
+                        <div className="w-full md:w-1/2 order-1 md:order-2 image-overlay">
+                            <img src="/services_social.png" alt="Eventos Sociales" className="w-full h-auto rounded-lg shadow-xl" />
                         </div>
                     </div>
                 </div>
@@ -44,16 +44,16 @@ const Services = () => {
                 {/* Corporate Events */}
                 <div>
                     <div className="flex flex-col md:flex-row items-center gap-12">
-                        <div className="w-full md:w-1/2">
-                            <img src="/services_corporate.png" alt="Eventos Corporativos" className="w-full h-auto shadow-xl" />
+                        <div className="w-full md:w-1/2 image-overlay">
+                            <img src="/services_corporate.png" alt="Eventos Corporativos" className="w-full h-auto rounded-lg shadow-xl" />
                         </div>
                         <div className="w-full md:w-1/2">
                             <h2 className="text-left mb-6">Eventos Corporativos</h2>
                             <p className="text-text-light mb-8">Nos especializamos en la planificación, producción y diseño integral de eventos corporativos que impactan.</p>
                             <div className="grid grid-cols-1 gap-6">
                                 {corporateServices.map((service) => (
-                                    <div key={service.title} className="flex items-start gap-4 p-4 border border-gray-200 hover:border-gold transition-colors bg-white shadow-sm">
-                                        <div className="text-gold mt-1"><service.icon size={24} /></div>
+                                    <div key={service.title} className="card hover-lift flex items-start gap-4">
+                                        <div className="text-gold mt-1"><service.icon size={28} /></div>
                                         <div>
                                             <h4 className="font-serif text-lg mb-2">{service.title}</h4>
                                             <p className="text-sm text-text-light">{service.desc}</p>
