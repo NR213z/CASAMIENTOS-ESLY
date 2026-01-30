@@ -35,9 +35,9 @@ const Testimonials = () => {
                             <div className="flex justify-center mb-4 text-gold">
                                 {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
                             </div>
-                            <p className="italic text-text-light mb-6 text-center">"{t.text}"</p>
+                            <p className="italic text-muted mb-6 text-center">"{t.text}"</p>
                             <h4 className="font-serif font-bold text-dark text-center">{t.name}</h4>
-                            <span className="text-xs text-text-light uppercase tracking-widest block text-center">{t.date}</span>
+                            <span className="text-xs text-muted uppercase tracking-widest block text-center">{t.date}</span>
                         </div>
                     ))}
                 </div>

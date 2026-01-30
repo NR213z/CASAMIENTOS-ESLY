@@ -57,7 +57,7 @@ const Contact = () => {
                                 <a href="#" className="hover:text-gold transition-colors"><Instagram /></a>
                                 <a href="#" className="hover:text-gold transition-colors"><Facebook /></a>
                             </div>
-                            <p className="text-xs text-text-light mt-8">
+                            <p className="text-xs text-muted mt-8">
                                 &copy; {new Date().getFullYear()} Romina Ferraretto. Todos los derechos reservados.
                             </p>
                         </div>

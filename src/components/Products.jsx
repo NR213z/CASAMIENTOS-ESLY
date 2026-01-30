@@ -117,7 +117,7 @@ const Products = () => {
         <section id="products" className="section bg-white">
             <div className="container mx-auto px-4">
                 <h2 className="mb-4">Nuestros Productos</h2>
-                <p className="text-center text-text-light mb-12 max-w-2xl mx-auto">
+                <p className="text-center text-muted mb-12 max-w-2xl mx-auto">
                     Complementa tu evento con nuestros servicios y productos premium
                 </p>
 
@@ -131,7 +131,7 @@ const Products = () => {
                 <div className="mb-12 flex flex-col md:flex-row gap-4 justify-between items-center">
                     {/* Search */}
                     <div className="relative w-full md:w-96">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-light" size={20} />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" size={20} />
                         <input
                             type="text"
                             placeholder="Buscar productos..."
@@ -149,7 +149,7 @@ const Products = () => {
                                 onClick={() => setSelectedCategory(cat.id)}
                                 className={`px-4 py-2 rounded-full text-sm uppercase tracking-wider transition-all ${selectedCategory === cat.id
                                     ? 'bg-gold text-white shadow-gold'
-                                    : 'bg-gray-100 text-text-light hover:bg-gray-200'
+                                    : 'bg-gray-100 text-muted hover:bg-gray-200'
                                     }`}
                             >
                                 {cat.name}
@@ -175,7 +175,7 @@ const Products = () => {
                             >
                                 <div className="image-overlay rounded-lg overflow-hidden mb-4">
                                     <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center">
-                                        <span className="text-text-light text-4xl">📦</span>
+                                        <span className="text-muted text-4xl">📦</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-start mb-2">
@@ -184,7 +184,7 @@ const Products = () => {
                                         <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">Agotado</span>
                                     )}
                                 </div>
-                                <p className="text-sm text-text-light mb-4 line-clamp-2">{product.description}</p>
+                                <p className="text-sm text-muted mb-4 line-clamp-2">{product.description}</p>
                                 <div className="flex justify-between items-center">
                                     <span className="text-2xl font-serif text-gold">{formatPrice(product.price)}</span>
                                     <button className="btn-gold text-xs py-2 px-4 disabled:opacity-50" disabled={!product.in_stock}>
@@ -198,7 +198,7 @@ const Products = () => {
 
                 {filteredProducts.length === 0 && (
                     <div className="text-center py-16">
-                        <p className="text-text-light text-lg">No se encontraron productos</p>
+                        <p className="text-muted text-lg">No se encontraron productos</p>
                     </div>
                 )}
             </div>
@@ -209,22 +209,22 @@ const Products = () => {
                     <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto scale-in" onClick={(e) => e.stopPropagation()}>
                         <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
                             <h3 className="font-serif text-2xl text-dark">{selectedProduct.name}</h3>
-                            <button onClick={() => setSelectedProduct(null)} className="text-text-light hover:text-dark transition-colors">
+                            <button onClick={() => setSelectedProduct(null)} className="text-muted hover:text-dark transition-colors">
                                 <X size={24} />
                             </button>
                         </div>
                         <div className="p-6">
                             <div className="aspect-video bg-gray-200 rounded-lg mb-6 flex items-center justify-center">
-                                <span className="text-text-light text-6xl">📦</span>
+                                <span className="text-muted text-6xl">📦</span>
                             </div>
                             <div className="mb-6">
                                 <span className="inline-block bg-gold-light text-dark px-3 py-1 rounded-full text-sm uppercase tracking-wider mb-4">
                                     {categories.find(c => c.id === selectedProduct.category)?.name}
                                 </span>
-                                <p className="text-text-light leading-relaxed mb-6">{selectedProduct.description}</p>
+                                <p className="text-muted leading-relaxed mb-6">{selectedProduct.description}</p>
                                 <div className="flex items-center justify-between border-t border-gray-100 pt-6">
                                     <div>
-                                        <span className="text-sm text-text-light block mb-1">Precio</span>
+                                        <span className="text-sm text-muted block mb-1">Precio</span>
                                         <span className="text-3xl font-serif text-gold">{formatPrice(selectedProduct.price)}</span>
                                     </div>
                                     <div className="flex gap-3">

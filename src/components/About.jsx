@@ -20,7 +20,7 @@ const About = () => {
                     {/* Text */}
                     <div className="w-full md:w-1/2">
                         <h2 className="text-left mb-6">Sobre Nosotros</h2>
-                        <div className="space-y-4 text-text-light font-light text-lg">
+                        <div className="space-y-4 text-muted font-light text-lg">
                             <p>
                                 <strong className="text-dark">Romina Ferraretto</strong> es reconocida por organizar las bodas más increíbles en Argentina.
                                 Especialista en bodas destino, es considerada internacionalmente como una de las 150 “Top Destination Wedding Planners”

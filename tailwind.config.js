@@ -12,7 +12,7 @@ export default {
                 dark: '#121212',
                 charcoal: '#2C2C2C',
                 'off-white': '#F9F9F9',
-                'text-light': '#777777',
+                'muted': '#777777',
             },
             fontFamily: {
                 serif: ['"Playfair Display"', 'serif'],
