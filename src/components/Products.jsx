@@ -195,8 +195,9 @@ const Products = () => {
                             </div>
                         ))}
                     </div>
+                )}
 
-                {filteredProducts.length === 0 && (
+                {!loading && filteredProducts.length === 0 && (
                     <div className="text-center py-16">
                         <p className="text-muted text-lg">No se encontraron productos</p>
                     </div>
