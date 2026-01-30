@@ -4,7 +4,7 @@ const About = () => {
     return (
         <section id="about" className="section bg-white">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-center gap-12">
+                <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
                     {/* Image */}
                     <div className="w-full md:w-1/2">
                         <div className="relative image-overlay">

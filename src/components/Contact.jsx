@@ -5,62 +5,46 @@ const Contact = () => {
     return (
         <section id="contact" className="section bg-dark text-white">
             <div className="container mx-auto px-4">
-                <h2 className="text-white mb-16">Contacto</h2>
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-white mb-8">Contacto</h2>
+                    <p className="text-xl text-off-white mb-12 font-light leading-relaxed">
+                        Estamos listos para hacer realidad tus sueños. Contáctanos para comenzar a planificar una experiencia inolvidable.
+                    </p>
 
-                <div className="flex flex-col lg:flex-row gap-16">
-                    {/* Form */}
-                    <div className="w-full lg:w-1/2">
-                        <form className="space-y-6">
-                            <div>
-                                <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Nombre</label>
-                                <input type="text" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 mb-16">
+                        <div className="flex items-center gap-4 group cursor-pointer">
+                            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-gold/30 group-hover:bg-gold/10 transition-colors">
+                                <Phone className="text-gold" size={20} />
                             </div>
-                            <div>
-                                <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Correo Electrónico</label>
-                                <input type="email" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
+                            <div className="text-left">
+                                <span className="block text-xs uppercase tracking-widest text-gold mb-1">WhatsApp</span>
+                                <span className="text-lg">+54 9 11 1234-5678</span>
                             </div>
-                            <div>
-                                <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Teléfono</label>
-                                <input type="tel" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors" />
+                        </div>
+                        <div className="flex items-center gap-4 group cursor-pointer">
+                            <div className="w-12 h-12 flex items-center justify-center rounded-full border border-gold/30 group-hover:bg-gold/10 transition-colors">
+                                <Mail className="text-gold" size={20} />
                             </div>
-                            <div>
-                                <label className="block text-sm uppercase tracking-widest mb-2 text-gold">Mensaje</label>
-                                <textarea rows="4" className="w-full p-3 bg-transparent border border-white/20 focus:border-gold text-white outline-none transition-colors"></textarea>
+                            <div className="text-left">
+                                <span className="block text-xs uppercase tracking-widest text-gold mb-1">Email</span>
+                                <span className="text-lg">contacto@rominaferraretto.com</span>
                             </div>
-                            <button type="submit" className="btn btn-gold w-full">Enviar Mensaje</button>
-                        </form>
+                        </div>
                     </div>
 
-                    {/* Info */}
-                    <div className="w-full lg:w-1/2 flex flex-col gap-12">
-                        <div>
-                            <h3 className="text-2xl font-serif mb-6 text-gold-light">Hablemos de tu evento</h3>
-                            <p className="text-off-white mb-8 font-light leading-relaxed">
-                                Estamos listos para hacer realidad tus sueños. Contáctanos para comenzar a planificar una experiencia inolvidable.
-                            </p>
-
-                            <div className="space-y-4 mb-12">
-                                <div className="flex items-center gap-4">
-                                    <Phone className="text-gold" />
-                                    <span>+54 9 11 4025-3383</span>
-                                </div>
-                                <div className="flex items-center gap-4">
-                                    <Mail className="text-gold" />
-                                    <span>[email protected]</span>
-                                </div>
-                            </div>
+                    <div className="pt-12 border-t border-charcoal">
+                        <h4 className="text-sm uppercase tracking-widest mb-6 text-gold">Síguenos</h4>
+                        <div className="flex justify-center gap-6">
+                            <a href="#" className="w-10 h-10 flex items-center justify-center rounded-full border border-white/10 hover:border-gold hover:text-gold transition-all duration-300">
+                                <Instagram size={20} />
+                            </a>
+                            <a href="#" className="w-10 h-10 flex items-center justify-center rounded-full border border-white/10 hover:border-gold hover:text-gold transition-all duration-300">
+                                <Facebook size={20} />
+                            </a>
                         </div>
-
-                        <div className="pt-8 border-t border-charcoal">
-                            <h4 className="text-sm uppercase tracking-widest mb-4 text-gold">Síguenos</h4>
-                            <div className="flex gap-4">
-                                <a href="#" className="hover:text-gold transition-colors"><Instagram /></a>
-                                <a href="#" className="hover:text-gold transition-colors"><Facebook /></a>
-                            </div>
-                            <p className="text-xs text-muted mt-8">
-                                &copy; {new Date().getFullYear()} Romina Ferraretto. Todos los derechos reservados.
-                            </p>
-                        </div>
+                        <p className="text-xs text-muted mt-12">
+                            &copy; {new Date().getFullYear()} Romina Ferraretto. Todos los derechos reservados.
+                        </p>
                     </div>
                 </div>
             </div>

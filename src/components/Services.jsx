@@ -19,7 +19,7 @@ const Services = () => {
             <div className="container mx-auto px-4">
                 {/* Social Events */}
                 <div className="mb-20">
-                    <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
                         <div className="w-full md:w-1/2 order-2 md:order-1">
                             <h2 className="text-left mb-6">Eventos Sociales</h2>
                             <p className="text-muted mb-8">Hacemos de tu evento un momento inolvidable. Creamos recuerdos únicos con una celebración llena de alegría, música y diversión.</p>
@@ -43,7 +43,7 @@ const Services = () => {
 
                 {/* Corporate Events */}
                 <div>
-                    <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
                         <div className="w-full md:w-1/2 image-overlay">
                             <img src="/services_corporate.png" alt="Eventos Corporativos" className="w-full h-auto rounded-lg shadow-xl" />
                         </div>

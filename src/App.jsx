@@ -1,24 +1,18 @@
-import { useState } from 'react'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import Services from './components/Services'
-import Products from './components/Products'
-import Testimonials from './components/Testimonials'
-import Contact from './components/Contact'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ProductsPage from './pages/ProductsPage';
 
 function App() {
   return (
-    <div className="app">
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Products />
-      <Testimonials />
-      <Contact />
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/productos" element={<ProductsPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
+
