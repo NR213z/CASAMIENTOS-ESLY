@@ -33,11 +33,11 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-4' : 'bg-transparent py-6'}`}>
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-4' : 'bg-gradient-to-b from-black/60 to-transparent py-6'}`}>
             <div className="container flex justify-between items-center">
                 {/* Logo */}
-                <div className="logo">
-                    <Link to="/" className={`font-serif text-2xl tracking-widest uppercase ${scrolled ? 'text-dark' : 'text-white'}`}>
+                <div className="logo relative z-50">
+                    <Link to="/" className={`font-serif text-2xl tracking-widest uppercase transition-colors ${scrolled || isOpen ? 'text-dark' : 'text-white'}`}>
                         Romina Ferraretto
                     </Link>
                 </div>
@@ -67,41 +67,39 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <div className="md:hidden">
-                    <button onClick={() => setIsOpen(!isOpen)} className={scrolled ? 'text-dark' : 'text-white'}>
+                <div className="md:hidden relative z-50">
+                    <button onClick={() => setIsOpen(!isOpen)} className={`transition-colors ${scrolled || isOpen ? 'text-dark' : 'text-white'}`}>
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
             </div>
 
             {/* Mobile Menu Overlay */}
-            {isOpen && (
-                <div className="absolute top-full left-0 w-full bg-white shadow-lg md:hidden">
-                    <ul className="flex flex-col p-6 space-y-4 text-center">
-                        {navLinks.map((link) => (
-                            <li key={link.name}>
-                                {link.type === 'route' ? (
-                                    <Link
-                                        to={link.href}
-                                        className="text-dark text-sm tracking-widest uppercase hover:text-gold block py-2"
-                                        onClick={() => setIsOpen(false)}
-                                    >
-                                        {link.name}
-                                    </Link>
-                                ) : (
-                                    <a
-                                        href={link.href}
-                                        className="text-dark text-sm tracking-widest uppercase hover:text-gold block py-2"
-                                        onClick={() => handleLinkClick(link)}
-                                    >
-                                        {link.name}
-                                    </a>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <div className={`fixed inset-0 bg-white z-40 flex flex-col items-center justify-center transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <ul className="flex flex-col space-y-8 text-center">
+                    {navLinks.map((link) => (
+                        <li key={link.name}>
+                            {link.type === 'route' ? (
+                                <Link
+                                    to={link.href}
+                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-gold transition-colors"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {link.name}
+                                </Link>
+                            ) : (
+                                <a
+                                    href={link.href}
+                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-gold transition-colors"
+                                    onClick={() => handleLinkClick(link)}
+                                >
+                                    {link.name}
+                                </a>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </nav>
     );
 };

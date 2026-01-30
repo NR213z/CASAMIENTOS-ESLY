@@ -139,13 +139,13 @@ img {
 }
 
 .btn:hover::before {
-  left: 0;
+  left: 100%;
 }
 
 .btn:hover {
   color: var(--color-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
 }
 
 .btn-gold {
