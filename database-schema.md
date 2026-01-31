@@ -93,6 +93,33 @@ INSERT INTO products (name, description, price, category, image_url, in_stock) V
 ('DJ + Sonido Profesional', 'DJ profesional con equipo de sonido completo, luces y playlist personalizada según tus preferencias.', 180000, 'entretenimiento', '/product-dj.jpg', true);
 ```
 
+## Contacts Table
+
+```sql
+-- Contacts table
+CREATE TABLE contacts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable Row Level Security
+ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for public insert (allows anyone to send a message)
+CREATE POLICY "Public can insert contacts" 
+ON contacts FOR INSERT 
+WITH CHECK (true);
+
+-- Create policy for authenticated read (admins only)
+CREATE POLICY "Authenticated users can view contacts" 
+ON contacts FOR SELECT 
+USING (auth.role() = 'authenticated');
+```
+
 ## Setup Instructions
 
 1. Go to your Supabase project dashboard
