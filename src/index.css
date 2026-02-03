@@ -3,37 +3,41 @@
 @import "tailwindcss";
 
 :root {
-  --color-gold: #C0A159;
-  /* More elegant, less yellow gold */
-  --color-gold-light: #E8DCC2;
-  --color-gold-darker: #9A7F3F;
-  --color-dark: #1A1A1A;
-  /* Soft rich black */
-  --color-charcoal: #333333;
+  /* Luxury Wedding Color Palette - Champagne, Cream, Silk Gray */
+  --color-champagne: #D4AF7A;
+  --color-champagne-light: #F5EBD9;
+  --color-champagne-dark: #B8935A;
+  --color-cream: #FAF7F2;
+  --color-ivory: #FFFFF0;
+  --color-silk-gray: #8B8680;
+  --color-dark: #2C2826;
+  --color-charcoal: #3D3935;
   --color-white: #FFFFFF;
-  --color-off-white: #F8F8F8;
-  --color-text-main: #333333;
-  --color-text-light: #666666;
-  --color-border: #E5E5E5;
+  --color-off-white: #FDFCFA;
+  --color-text-main: #3D3935;
+  --color-text-light: #8B8680;
+  --color-border: #EBE8E3;
 
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Lato', sans-serif;
 
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 2.5rem;
-  --spacing-xl: 5rem;
-  --spacing-xxl: 8rem;
-  /* More breathing room */
+  /* 8px-based Spacing System */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 64px;
+  --spacing-xxxl: 80px;
 
   --container-max-width: 1200px;
 
-  /* Shadows - Softer & Cleaner */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
-  --shadow-gold: 0 10px 25px rgba(192, 161, 89, 0.25);
+  /* Almost Imperceptible Shadows - Subtle Elegance */
+  --shadow-sm: 0 1px 3px rgba(44, 40, 38, 0.04);
+  --shadow-md: 0 2px 8px rgba(44, 40, 38, 0.06);
+  --shadow-lg: 0 4px 16px rgba(44, 40, 38, 0.08);
+  --shadow-xl: 0 8px 24px rgba(44, 40, 38, 0.10);
+  --shadow-champagne: 0 6px 20px rgba(212, 175, 122, 0.15);
 }
 
 * {
@@ -74,7 +78,7 @@ h2 {
   margin-bottom: var(--spacing-lg);
   text-align: center;
   position: relative;
-  padding-bottom: 1.5rem;
+  padding-bottom: var(--spacing-md);
 }
 
 h2::after {
@@ -83,9 +87,9 @@ h2::after {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background-color: var(--color-gold);
+  width: 64px;
+  height: 2px;
+  background-color: var(--color-champagne);
 }
 
 a {
@@ -112,7 +116,7 @@ img {
 }
 
 .section {
-  padding: var(--spacing-xxl) 0;
+  padding: var(--spacing-xxxl) 0;
   position: relative;
 }
 
@@ -121,7 +125,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 40px;
+  padding: var(--spacing-sm) var(--spacing-xl);
   background-color: var(--color-dark);
   color: var(--color-white);
   text-transform: uppercase;
@@ -129,6 +133,7 @@ img {
   font-weight: 700;
   letter-spacing: 0.15em;
   border: 1px solid var(--color-dark);
+  border-radius: 4px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -143,18 +148,18 @@ img {
   box-shadow: var(--shadow-md);
 }
 
-.btn-gold {
-  background-color: var(--color-gold);
-  border-color: var(--color-gold);
+.btn-champagne {
+  background-color: var(--color-champagne);
+  border-color: var(--color-champagne);
   color: var(--color-white);
 }
 
-.btn-gold:hover {
-  background-color: var(--color-gold-darker);
-  border-color: var(--color-gold-darker);
+.btn-champagne:hover {
+  background-color: var(--color-champagne-dark);
+  border-color: var(--color-champagne-dark);
   color: var(--color-white);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-champagne);
 }
 
 /* Utilities */
@@ -162,8 +167,8 @@ img {
   text-align: center;
 }
 
-.text-gold {
-  color: var(--color-gold);
+.text-champagne {
+  color: var(--color-champagne);
 }
 
 .uppercase {
@@ -177,8 +182,8 @@ img {
 /* Premium Card Styles */
 .card {
   background: var(--color-white);
-  border-radius: 8px;
-  padding: 2rem;
+  border-radius: 6px;
+  padding: var(--spacing-lg);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
@@ -190,16 +195,16 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), transparent);
+  background: linear-gradient(135deg, rgba(212, 175, 122, 0.04), transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
-  border-radius: 8px;
+  border-radius: 6px;
   pointer-events: none;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .card:hover::before {
@@ -328,7 +333,7 @@ img {
 
 /* Gradient Text */
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  background: linear-gradient(135deg, var(--color-champagne), var(--color-champagne-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -365,7 +370,7 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(18, 18, 18, 0.5));
+  background: linear-gradient(135deg, rgba(212, 175, 122, 0.25), rgba(44, 40, 38, 0.4));
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -392,6 +397,6 @@ html {
 
 /* Selection */
 ::selection {
-  background-color: var(--color-gold);
+  background-color: var(--color-champagne);
   color: var(--color-white);
 }

@@ -26,7 +26,7 @@ const Services = () => {
                             <div className="grid grid-cols-1 gap-6">
                                 {socialServices.map((service) => (
                                     <div key={service.title} className="card hover-lift flex items-start gap-4">
-                                        <div className="text-gold mt-1"><service.icon size={28} /></div>
+                                        <div className="text-champagne mt-1"><service.icon size={28} /></div>
                                         <div>
                                             <h4 className="font-serif text-lg mb-2">{service.title}</h4>
                                             <p className="text-sm text-muted">{service.desc}</p>
@@ -53,7 +53,7 @@ const Services = () => {
                             <div className="grid grid-cols-1 gap-6">
                                 {corporateServices.map((service) => (
                                     <div key={service.title} className="card hover-lift flex items-start gap-4">
-                                        <div className="text-gold mt-1"><service.icon size={28} /></div>
+                                        <div className="text-champagne mt-1"><service.icon size={28} /></div>
                                         <div>
                                             <h4 className="font-serif text-lg mb-2">{service.title}</h4>
                                             <p className="text-sm text-muted">{service.desc}</p>

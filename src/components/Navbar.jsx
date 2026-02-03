@@ -12,6 +12,8 @@ const Navbar = () => {
             setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
+        // Initial check
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -19,6 +21,7 @@ const Navbar = () => {
         { name: 'Inicio', href: '/', type: 'route' },
         { name: 'Sobre Nosotros', href: '#about', type: 'hash' },
         { name: 'Servicios', href: '#services', type: 'hash' },
+        { name: 'Galería', href: '#gallery', type: 'hash' },
         { name: 'Productos', href: '/productos', type: 'route' },
         { name: 'Testimonios', href: '#testimonials', type: 'hash' },
         { name: 'Contacto', href: '#contact', type: 'hash' },
@@ -27,17 +30,22 @@ const Navbar = () => {
     const handleLinkClick = (link) => {
         setIsOpen(false);
         if (link.type === 'hash' && location.pathname !== '/') {
-            // If we're not on home page and clicking a hash link, go to home first
             window.location.href = '/' + link.href;
         }
     };
 
+    // Enhanced visibility: Stronger backdrop blur and semi-transparent bg
+    const textColorClass = scrolled || isOpen ? 'text-dark' : 'text-white';
+    const bgClass = scrolled
+        ? 'bg-white/95 backdrop-blur-md shadow-md py-4 border-b border-border'
+        : 'bg-black/30 backdrop-blur-lg py-6';
+
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-4' : 'bg-gradient-to-b from-black/60 to-transparent py-6'}`}>
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${bgClass}`}>
             <div className="container flex justify-between items-center">
                 {/* Logo */}
                 <div className="logo relative z-50">
-                    <Link to="/" className={`font-serif text-2xl tracking-widest uppercase transition-colors ${scrolled || isOpen ? 'text-dark' : 'text-white'}`}>
+                    <Link to="/" className={`font-serif text-2xl tracking-widest uppercase transition-colors ${textColorClass}`}>
                         Romina Ferraretto
                     </Link>
                 </div>
@@ -49,7 +57,8 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className={`text-sm tracking-widest uppercase transition-colors hover:text-gold ${scrolled ? 'text-dark' : 'text-white'}`}
+                                className={`text-sm tracking-widest uppercase transition-colors hover:text-champagne font-bold ${textColorClass}`}
+                                style={!scrolled ? { textShadow: '0 2px 8px rgba(0,0,0,0.5)' } : {}}
                             >
                                 {link.name}
                             </Link>
@@ -58,7 +67,8 @@ const Navbar = () => {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => handleLinkClick(link)}
-                                className={`text-sm tracking-widest uppercase transition-colors hover:text-gold ${scrolled ? 'text-dark' : 'text-white'}`}
+                                className={`text-sm tracking-widest uppercase transition-colors hover:text-champagne font-bold ${textColorClass}`}
+                                style={!scrolled ? { textShadow: '0 2px 8px rgba(0,0,0,0.5)' } : {}}
                             >
                                 {link.name}
                             </a>
@@ -68,7 +78,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu Button */}
                 <div className="md:hidden relative z-50">
-                    <button onClick={() => setIsOpen(!isOpen)} className={`transition-colors ${scrolled || isOpen ? 'text-dark' : 'text-white'}`}>
+                    <button onClick={() => setIsOpen(!isOpen)} className={`transition-colors ${textColorClass}`}>
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
@@ -82,7 +92,7 @@ const Navbar = () => {
                             {link.type === 'route' ? (
                                 <Link
                                     to={link.href}
-                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-gold transition-colors"
+                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-champagne transition-colors"
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.name}
@@ -90,7 +100,7 @@ const Navbar = () => {
                             ) : (
                                 <a
                                     href={link.href}
-                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-gold transition-colors"
+                                    className="text-dark text-2xl font-serif tracking-widest uppercase hover:text-champagne transition-colors"
                                     onClick={() => handleLinkClick(link)}
                                 >
                                     {link.name}
