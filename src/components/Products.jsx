@@ -38,7 +38,7 @@ const Products = () => {
             name: 'Decoración Premium',
             category: 'decoracion',
             price: 150000,
-            image_url: '/product-decoration.jpg',
+            image_url: '/gallery/boda1.jpg',
             description: 'Decoración completa para eventos de hasta 100 personas. Incluye centros de mesa, arreglos florales y ambientación temática.',
             in_stock: true
         },
@@ -47,7 +47,7 @@ const Products = () => {
             name: 'Paquete de Iluminación',
             category: 'iluminacion',
             price: 85000,
-            image_url: '/product-lighting.jpg',
+            image_url: '/gallery/boda2.jpg',
             description: 'Sistema de iluminación profesional con luces LED RGB, spots y efectos especiales para crear el ambiente perfecto.',
             in_stock: true
         },
@@ -56,7 +56,7 @@ const Products = () => {
             name: 'Mobiliario Lounge',
             category: 'mobiliario',
             price: 120000,
-            image_url: '/product-furniture.jpg',
+            image_url: '/gallery/boda3.jpg',
             description: 'Set de mobiliario lounge elegante: sofás, mesas ratona, puffs y sillones para zona de descanso VIP.',
             in_stock: true
         },
@@ -65,7 +65,7 @@ const Products = () => {
             name: 'Candy Bar Personalizado',
             category: 'catering',
             price: 95000,
-            image_url: '/product-candybar.jpg',
+            image_url: '/gallery/boda4.jpg',
             description: 'Mesa dulce totalmente personalizada con temática a elección, incluye postres, dulces y decoración.',
             in_stock: true
         },
@@ -74,7 +74,7 @@ const Products = () => {
             name: 'Photobooth Premium',
             category: 'entretenimiento',
             price: 75000,
-            image_url: '/product-photobooth.jpg',
+            image_url: '/gallery/boda5.jpg',
             description: 'Cabina de fotos con impresión instantánea, backdrop personalizado, props y album digital.',
             in_stock: false
         },
@@ -137,7 +137,7 @@ const Products = () => {
                             placeholder="Buscar productos..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 border border-gray-200 focus:border-gold outline-none transition-colors rounded-md"
+                            className="w-full pl-12 pr-4 py-3 border border-gray-200 focus:border-champagne outline-none transition-colors rounded-md"
                         />
                     </div>
 
@@ -148,7 +148,7 @@ const Products = () => {
                                 key={cat.id}
                                 onClick={() => setSelectedCategory(cat.id)}
                                 className={`px-4 py-2 rounded-full text-sm uppercase tracking-wider transition-all ${selectedCategory === cat.id
-                                    ? 'bg-gold text-white shadow-gold'
+                                    ? 'bg-champagne text-white shadow-champagne'
                                     : 'bg-gray-100 text-muted hover:bg-gray-200'
                                     }`}
                             >
@@ -186,8 +186,8 @@ const Products = () => {
                                 </div>
                                 <p className="text-sm text-muted mb-4 line-clamp-2">{product.description}</p>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-2xl font-serif text-gold">{formatPrice(product.price)}</span>
-                                    <button className="btn-gold text-xs py-2 px-4 disabled:opacity-50" disabled={!product.in_stock}>
+                                    <span className="text-2xl font-serif text-champagne">{formatPrice(product.price)}</span>
+                                    <button className="btn-champagne text-[10px] py-2 px-4 disabled:opacity-50 tracking-wider font-bold" disabled={!product.in_stock}>
                                         <ShoppingCart size={16} className="inline mr-1" />
                                         Consultar
                                     </button>
@@ -219,17 +219,17 @@ const Products = () => {
                                 <span className="text-muted text-6xl">📦</span>
                             </div>
                             <div className="mb-6">
-                                <span className="inline-block bg-gold-light text-dark px-3 py-1 rounded-full text-sm uppercase tracking-wider mb-4">
-                                    {categories.find(c => c.id === selectedProduct.category)?.name}
+                                <span className="inline-block bg-champagne-light text-dark px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                                    {categories.find(c => c.id === selectedCategory)?.name}
                                 </span>
                                 <p className="text-muted leading-relaxed mb-6">{selectedProduct.description}</p>
                                 <div className="flex items-center justify-between border-t border-gray-100 pt-6">
                                     <div>
-                                        <span className="text-sm text-muted block mb-1">Precio</span>
-                                        <span className="text-3xl font-serif text-gold">{formatPrice(selectedProduct.price)}</span>
+                                        <span className="text-xs text-muted block mb-1 uppercase tracking-widest font-bold">Precio</span>
+                                        <span className="text-3xl font-serif text-champagne">{formatPrice(selectedProduct.price)}</span>
                                     </div>
                                     <div className="flex gap-3">
-                                        <a href="#contact" className="btn btn-gold" onClick={() => setSelectedProduct(null)}>
+                                        <a href="#contact" className="btn btn-champagne" onClick={() => setSelectedProduct(null)}>
                                             Consultar Disponibilidad
                                         </a>
                                     </div>

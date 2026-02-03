@@ -8,7 +8,7 @@ const About = () => {
                     {/* Image */}
                     <div className="w-full md:w-1/2">
                         <div className="relative image-overlay">
-                            <div className="absolute top-4 left-4 w-full h-full border-2 border-gold -z-10"></div>
+                            <div className="absolute top-4 left-4 w-full h-full border-2 border-champagne -z-10"></div>
                             <img
                                 src="/about_img.png"
                                 alt="Romina Ferraretto"
@@ -27,7 +27,7 @@ const About = () => {
                                 del mundo por el Destination Wedding Planners Congress “DWP”.
                             </p>
                             <p>
-                                Bajo el lema <span className="italic text-gold">“We Create, You Celebrate”</span>, la organización de sus eventos es única y exclusiva.
+                                Bajo el lema <span className="italic text-champagne">“We Create, You Celebrate”</span>, la organización de sus eventos es única y exclusiva.
                                 El resultado: verdaderas experiencias inolvidables para sus novios.
                             </p>
                             <p>
@@ -35,7 +35,7 @@ const About = () => {
                                 Su habilidad para fusionar estilos individuales con diseños visionarios garantiza celebraciones impecables y memorables.
                             </p>
                             <div className="pt-6">
-                                <a href="#services" className="text-gold uppercase tracking-widest text-sm border-b border-gold hover:text-dark hover:border-dark transition-all">
+                                <a href="#services" className="text-champagne uppercase tracking-[0.2em] text-xs font-semibold border-b border-champagne/40 hover:text-dark hover:border-dark transition-all">
                                     Conoce nuestros servicios
                                 </a>
                             </div>

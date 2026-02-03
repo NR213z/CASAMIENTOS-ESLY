@@ -31,9 +31,9 @@ const Testimonials = () => {
                 <h2 className="mb-12">Testimonios</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {testimonials.map((t, index) => (
-                        <div key={index} className="card hover-lift text-left">
-                            <div className="flex justify-center mb-4 text-gold">
-                                {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
+                        <div key={index} className="card hover-lift text-left border border-border/40">
+                            <div className="flex justify-center mb-6 text-champagne">
+                                {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}
                             </div>
                             <p className="italic text-muted mb-6 text-center">"{t.text}"</p>
                             <h4 className="font-serif font-bold text-dark text-center">{t.name}</h4>

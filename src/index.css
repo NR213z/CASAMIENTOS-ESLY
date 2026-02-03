@@ -3,20 +3,20 @@
 @import "tailwindcss";
 
 :root {
-  /* Luxury Wedding Color Palette - Champagne, Cream, Silk Gray */
-  --color-champagne: #D4AF7A;
-  --color-champagne-light: #F5EBD9;
-  --color-champagne-dark: #B8935A;
-  --color-cream: #FAF7F2;
-  --color-ivory: #FFFFF0;
-  --color-silk-gray: #8B8680;
-  --color-dark: #2C2826;
-  --color-charcoal: #3D3935;
+  /* Refined Luxury Wedding Color Palette - Silky Champagne & Warm Creams */
+  --color-champagne: #C5A059;
+  --color-champagne-light: #F2E8D5;
+  --color-champagne-dark: #A68341;
+  --color-cream: #FAF9F6;
+  --color-ivory: #FFFFFF;
+  --color-silk-gray: #9E9A95;
+  --color-dark: #1F1C1B;
+  --color-charcoal: #33302E;
   --color-white: #FFFFFF;
-  --color-off-white: #FDFCFA;
-  --color-text-main: #3D3935;
-  --color-text-light: #8B8680;
-  --color-border: #EBE8E3;
+  --color-off-white: #F9F8F6;
+  --color-text-main: #2D2A28;
+  --color-text-light: #7A7570;
+  --color-border: #E8E4DF;
 
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Lato', sans-serif;
@@ -65,7 +65,7 @@ h6 {
   font-family: var(--font-serif);
   font-weight: 400;
   color: var(--color-dark);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
 }
 
 h1 {
@@ -74,11 +74,13 @@ h1 {
 }
 
 h2 {
-  font-size: 2.75rem;
-  margin-bottom: var(--spacing-lg);
+  font-size: 3rem;
+  margin-bottom: var(--spacing-xl);
   text-align: center;
   position: relative;
   padding-bottom: var(--spacing-md);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 h2::after {
@@ -87,8 +89,8 @@ h2::after {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 64px;
-  height: 2px;
+  width: 40px;
+  height: 1px;
   background-color: var(--color-champagne);
 }
 
@@ -125,19 +127,19 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-xl);
+  padding: var(--spacing-sm) 48px;
   background-color: var(--color-dark);
   color: var(--color-white);
   text-transform: uppercase;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   border: 1px solid var(--color-dark);
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
 

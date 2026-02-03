@@ -5,26 +5,25 @@ const Gallery = () => {
     const [lightboxImage, setLightboxImage] = useState(null);
 
     const images = [
-        { src: '/gallery/Copia de C&H (1).jpg', alt: 'Boda elegante 1', gridClass: 'md:col-span-2 md:row-span-2' },
-        { src: '/gallery/Copia de C&H (3).jpg', alt: 'Boda elegante 3', gridClass: 'md:col-span-1 md:row-span-1' },
-        { src: '/gallery/Copia de C&H (4).jpg', alt: 'Boda elegante 4', gridClass: 'md:col-span-1 md:row-span-1' },
-        { src: '/gallery/Copia de C&H (10).jpg', alt: 'Boda elegante 10', gridClass: 'md:col-span-1 md:row-span-2' },
-        { src: '/gallery/Copia de C&H (21).jpg', alt: 'Boda elegante 21', gridClass: 'md:col-span-2 md:row-span-1' },
+        { src: '/gallery/boda1.jpg', alt: 'Decoración de boda con flores blancas y candelabros', gridClass: 'md:col-span-2 md:row-span-2' },
+        { src: '/gallery/boda2.jpg', alt: 'Detalle de mesa de bodas elegante', gridClass: 'md:col-span-1 md:row-span-1' },
+        { src: '/gallery/boda3.jpg', alt: 'Salón de eventos con iluminación cálida', gridClass: 'md:col-span-1 md:row-span-1' },
+        { src: '/gallery/boda4.jpg', alt: 'Ambientación de boda nocturna premium', gridClass: 'md:col-span-1 md:row-span-2' },
+        { src: '/gallery/boda5.jpg', alt: 'Celebración de boda en gran salón decorado', gridClass: 'md:col-span-2 md:row-span-1' },
     ];
 
     return (
         <section id="gallery" className="section bg-off-white">
             <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto text-center mb-16">
-                    <h2 className="text-dark mb-6">Galería</h2>
-                    <p className="text-xl text-text-light font-light leading-relaxed">
-                        Cada detalle cuenta una historia. Descubrí la elegancia y sofisticación <br />
-                        de nuestros eventos más memorables.
+                <div className="max-w-4xl mx-auto text-center mb-20">
+                    <h2 className="text-dark mb-6">Galería de Eventos</h2>
+                    <p className="text-xl text-text-light font-light leading-relaxed tracking-wide italic">
+                        Detalles que trascienden el tiempo.
                     </p>
                 </div>
 
-                {/* Moodboard Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
+                {/* Moodboard Grid Layout - Expanded Gap for Luxury Feel */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {images.map((image, index) => (
                         <div
                             key={index}
