@@ -1,17 +1,15 @@
-import gallery1 from "@/assets/gallery-1.jpg";
-import gallery2 from "@/assets/gallery-2.jpg";
-import gallery3 from "@/assets/gallery-3.jpg";
-import gallery4 from "@/assets/gallery-4.jpg";
-import gallery5 from "@/assets/gallery-5.jpg";
-import gallery6 from "@/assets/gallery-6.jpg";
+import gallery1 from "@/assets/new_images/boda1.jpg";
+import gallery2 from "@/assets/new_images/boda2.jpg";
+import gallery3 from "@/assets/new_images/boda3.jpg";
+import gallery4 from "@/assets/new_images/boda4.jpg";
+import gallery5 from "@/assets/new_images/boda5.jpg";
 
 const images = [
-  { src: gallery1, alt: "Mesa elegante con rosas blancas", className: "md:col-span-1 md:row-span-2" },
-  { src: gallery2, alt: "Fiesta al aire libre", className: "md:col-span-1" },
-  { src: gallery3, alt: "Boda destino frente al mar", className: "md:col-span-1 md:row-span-2" },
-  { src: gallery4, alt: "Conferencia corporativa", className: "md:col-span-1" },
-  { src: gallery5, alt: "Bouquet de novia", className: "md:col-span-1" },
-  { src: gallery6, alt: "Lounge de evento nocturno", className: "md:col-span-1" },
+  { src: gallery1, alt: "Boda elegante", className: "md:col-span-1 md:row-span-2" },
+  { src: gallery2, alt: "Celebración especial", className: "md:col-span-1" },
+  { src: gallery3, alt: "Evento inolvidable", className: "md:col-span-1 md:row-span-2" },
+  { src: gallery4, alt: "Detalle decorativo", className: "md:col-span-1" },
+  { src: gallery5, alt: "Momento único", className: "md:col-span-1" },
 ];
 
 const GallerySection = () => {

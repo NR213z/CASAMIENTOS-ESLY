@@ -1,5 +1,5 @@
-import socialImg from "@/assets/social-event.jpg";
-import corporateImg from "@/assets/corporate-event.jpg";
+import socialImg from "@/assets/new_images/services_social.png";
+import corporateImg from "@/assets/new_images/services_corporate.png";
 
 const services = [
   {

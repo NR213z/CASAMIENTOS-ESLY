@@ -1,4 +1,4 @@
-import profileImg from "@/assets/romina-profile.jpg";
+import profileImg from "@/assets/new_images/about_img.png";
 
 const AboutSection = () => {
   return (
