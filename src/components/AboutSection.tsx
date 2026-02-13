@@ -1,4 +1,4 @@
-import profileImg from "@/assets/new_images/about_img.png";
+import profileImg from "@/assets/new_images/esly_carlos.jpg";
 
 const AboutSection = () => {
   return (
@@ -10,7 +10,7 @@ const AboutSection = () => {
             <div className="aspect-[3/4] overflow-hidden">
               <img
                 src={profileImg}
-                alt="Romina Ferraretto"
+                alt="Esly y Carlos"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -23,7 +23,7 @@ const AboutSection = () => {
               Sobre Nosotros
             </p>
             <h2 className="font-display text-3xl md:text-5xl font-light text-foreground mb-6">
-              Romina <span className="italic">Ferraretto</span>
+              Esly <span className="italic">y Carlos</span>
             </h2>
             <div className="w-12 h-px bg-gold mb-8" />
             <p className="text-sm md:text-base font-body font-light text-muted-foreground leading-relaxed mb-6">
