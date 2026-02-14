@@ -15,10 +15,25 @@ export const useScrollFadeIn = () => {
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
 
-    const elements = ref.current?.querySelectorAll(".fade-in-section");
-    elements?.forEach((el) => observer.observe(el));
+    const observeElements = () => {
+      const elements = ref.current?.querySelectorAll(".fade-in-section:not(.is-visible)");
+      elements?.forEach((el) => observer.observe(el));
+    };
 
-    return () => observer.disconnect();
+    observeElements();
+
+    const mutationObserver = new MutationObserver(() => {
+      observeElements();
+    });
+
+    if (ref.current) {
+      mutationObserver.observe(ref.current, { childList: true, subtree: true });
+    }
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return ref;
