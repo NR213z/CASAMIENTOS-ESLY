@@ -8,6 +8,7 @@ const Products = () => {
   const containerRef = useScrollFadeIn();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -15,6 +16,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     setLoading(true);
+    setError('');
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -22,6 +24,7 @@ const Products = () => {
 
     if (error) {
       console.error('Error fetching products:', error);
+      setError(error.message);
     } else {
       setProducts(data || []);
     }
@@ -52,12 +55,17 @@ const Products = () => {
       {/* Products Grid */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-6">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm mb-6">
+              Error: {error}
+            </div>
+          )}
           {loading ? (
             <div className="text-center py-20">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
               <p className="text-warm-gray font-body">Cargando productos...</p>
             </div>
-          ) : products.length === 0 ? (
+          ) : products.length === 0 && !error ? (
             <div className="mt-20 text-center fade-in-section">
               <div className="inline-block border border-gold/30 px-8 py-6 max-w-2xl">
                 <p className="text-sm md:text-base text-foreground/70 font-body font-light leading-relaxed">
