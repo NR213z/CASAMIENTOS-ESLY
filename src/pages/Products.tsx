@@ -78,7 +78,7 @@ const Products = () => {
                     {product.image_url ? (
                       <img
                         src={product.image_url}
-                        alt={product.title}
+                        alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
@@ -93,8 +93,13 @@ const Products = () => {
                   </div>
                   <div className="text-center">
                     <h3 className="font-display text-xl md:text-2xl font-light text-foreground mb-2">
-                      {product.title}
+                      {product.name}
                     </h3>
+                    {product.category && (
+                      <p className="text-xs uppercase tracking-[0.15em] text-warm-gray font-body mb-1">
+                        {product.category}
+                      </p>
+                    )}
                     <p className="text-lg text-gold font-body">
                       ${product.price.toLocaleString()}
                     </p>

@@ -126,7 +126,7 @@ const AdminDashboard = () => {
                                     {product.image_url ? (
                                         <img
                                             src={product.image_url}
-                                            alt={product.title}
+                                            alt={product.name}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
                                     ) : (
@@ -139,11 +139,19 @@ const AdminDashboard = () => {
                                 </div>
                                 <div className="p-6">
                                     <h3 className="font-display text-xl font-light text-foreground mb-2">
-                                        {product.title}
+                                        {product.name}
                                     </h3>
-                                    <p className="text-lg text-gold font-body mb-4">
+                                    {product.category && (
+                                        <p className="text-xs uppercase tracking-[0.15em] text-warm-gray font-body mb-1">
+                                            {product.category}
+                                        </p>
+                                    )}
+                                    <p className="text-lg text-gold font-body mb-1">
                                         ${product.price.toLocaleString()}
                                     </p>
+                                    {!product.in_stock && (
+                                        <p className="text-xs text-red-500 font-body mb-2">Sin stock</p>
+                                    )}
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleEdit(product)}

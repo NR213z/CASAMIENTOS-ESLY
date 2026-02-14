@@ -12,22 +12,31 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Types for our database
 export interface Product {
     id: string;
-    title: string;
+    name: string;
+    description: string | null;
     price: number;
+    category: string | null;
     image_url: string | null;
+    in_stock: boolean;
     created_at: string;
     updated_at: string;
 }
 
 export interface ProductInsert {
-    title: string;
+    name: string;
+    description?: string | null;
     price: number;
+    category?: string | null;
     image_url?: string | null;
+    in_stock?: boolean;
 }
 
 export interface ProductUpdate {
-    title?: string;
+    name?: string;
+    description?: string | null;
     price?: number;
+    category?: string | null;
     image_url?: string | null;
+    in_stock?: boolean;
     updated_at?: string;
 }
