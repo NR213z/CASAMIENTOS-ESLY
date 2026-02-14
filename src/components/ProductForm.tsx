@@ -7,9 +7,14 @@ interface ProductFormProps {
     onClose: () => void;
 }
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const ProductForm = ({ product, onClose }: ProductFormProps) => {
-    const [title, setTitle] = useState(product?.title || '');
+    const [name, setName] = useState(product?.name || '');
+    const [description, setDescription] = useState(product?.description || '');
     const [price, setPrice] = useState(product?.price.toString() || '');
+    const [category, setCategory] = useState(product?.category || '');
+    const [inStock, setInStock] = useState(product?.in_stock ?? true);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState(product?.image_url || '');
     const [loading, setLoading] = useState(false);
@@ -18,6 +23,11 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            if (file.size > MAX_FILE_SIZE) {
+                setError('La imagen no debe superar los 5MB');
+                return;
+            }
+            setError('');
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -60,15 +70,18 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
             if (imageFile) {
                 const uploadedUrl = await uploadImage(imageFile);
                 if (!uploadedUrl) {
-                    throw new Error('Error al subir la imagen');
+                    throw new Error('Error al subir la imagen. Verifica que el bucket "product-images" exista y sea público en Supabase.');
                 }
                 imageUrl = uploadedUrl;
             }
 
             const productData: ProductInsert = {
-                title,
-                price: parseFloat(price),
+                name,
+                description: description || null,
+                price: parseFloat(price) || 0,
+                category: category || null,
                 image_url: imageUrl,
+                in_stock: inStock,
             };
 
             if (product) {
@@ -119,16 +132,16 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
 
                     <div>
                         <label
-                            htmlFor="title"
+                            htmlFor="name"
                             className="block text-xs uppercase tracking-[0.2em] text-foreground/70 font-body mb-2"
                         >
-                            Título del Producto *
+                            Nombre del Producto *
                         </label>
                         <input
                             type="text"
-                            id="title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                             className="w-full px-4 py-3 border border-warm-gray/30 bg-background text-foreground font-body text-sm focus:outline-none focus:border-gold transition-colors"
                             placeholder="Ej: Centro de mesa elegante"
@@ -137,27 +150,82 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
 
                     <div>
                         <label
-                            htmlFor="price"
+                            htmlFor="description"
                             className="block text-xs uppercase tracking-[0.2em] text-foreground/70 font-body mb-2"
                         >
-                            Precio *
+                            Descripción
                         </label>
-                        <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-gray">
-                                $
-                            </span>
+                        <textarea
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={3}
+                            className="w-full px-4 py-3 border border-warm-gray/30 bg-background text-foreground font-body text-sm focus:outline-none focus:border-gold transition-colors resize-none"
+                            placeholder="Describe el producto..."
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                htmlFor="price"
+                                className="block text-xs uppercase tracking-[0.2em] text-foreground/70 font-body mb-2"
+                            >
+                                Precio *
+                            </label>
+                            <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-gray">
+                                    $
+                                </span>
+                                <input
+                                    type="number"
+                                    id="price"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    required
+                                    step="0.01"
+                                    min="0"
+                                    className="w-full pl-8 pr-4 py-3 border border-warm-gray/30 bg-background text-foreground font-body text-sm focus:outline-none focus:border-gold transition-colors"
+                                    placeholder="0.00"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="category"
+                                className="block text-xs uppercase tracking-[0.2em] text-foreground/70 font-body mb-2"
+                            >
+                                Categoría
+                            </label>
                             <input
-                                type="number"
-                                id="price"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                required
-                                step="0.01"
-                                min="0"
-                                className="w-full pl-8 pr-4 py-3 border border-warm-gray/30 bg-background text-foreground font-body text-sm focus:outline-none focus:border-gold transition-colors"
-                                placeholder="0.00"
+                                type="text"
+                                id="category"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full px-4 py-3 border border-warm-gray/30 bg-background text-foreground font-body text-sm focus:outline-none focus:border-gold transition-colors"
+                                placeholder="Ej: Decoración"
                             />
                         </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setInStock(!inStock)}
+                            className={`relative w-12 h-6 rounded-full transition-colors ${
+                                inStock ? 'bg-gold' : 'bg-warm-gray/30'
+                            }`}
+                        >
+                            <span
+                                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                                    inStock ? 'translate-x-6' : 'translate-x-0'
+                                }`}
+                            />
+                        </button>
+                        <label className="text-sm text-foreground font-body">
+                            {inStock ? 'En stock' : 'Sin stock'}
+                        </label>
                     </div>
 
                     <div>
