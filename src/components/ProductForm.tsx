@@ -17,6 +17,7 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
     const [inStock, setInStock] = useState(product?.in_stock ?? true);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState(product?.image_url || '');
+    const [imageError, setImageError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -29,6 +30,7 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
             }
             setError('');
             setImageFile(file);
+            setImageError(false);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
@@ -232,22 +234,21 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
                         <label className="block text-xs uppercase tracking-[0.2em] text-foreground/70 font-body mb-2">
                             Imagen del Producto
                         </label>
-                        {imagePreview && (
-                            <div className="mb-4 aspect-[4/3] bg-sand overflow-hidden relative">
+                        {imagePreview && !imageError && (
+                            <div className="mb-4 aspect-[4/3] bg-sand overflow-hidden">
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
                                     className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                        (e.target as HTMLImageElement).style.display = 'none';
-                                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                                    }}
+                                    onError={() => setImageError(true)}
                                 />
-                                <div className="hidden absolute inset-0 flex items-center justify-center">
-                                    <p className="text-warm-gray/60 font-body text-sm">
-                                        Imagen anterior no disponible. Sube una nueva.
-                                    </p>
-                                </div>
+                            </div>
+                        )}
+                        {imagePreview && imageError && (
+                            <div className="mb-4 p-4 bg-sand text-center">
+                                <p className="text-warm-gray/60 font-body text-sm">
+                                    Imagen anterior no disponible. Sube una nueva.
+                                </p>
                             </div>
                         )}
                         <label className="block cursor-pointer">
