@@ -23,7 +23,6 @@ const Products = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching products:', error);
       setError(error.message);
     } else {
       setProducts(data || []);

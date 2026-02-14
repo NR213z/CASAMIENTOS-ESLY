@@ -25,7 +25,7 @@ const AdminDashboard = () => {
             .order('created_at', { ascending: false });
 
         if (error) {
-            console.error('Error fetching products:', error);
+            // Error silenciado en producción
         } else {
             setProducts(data || []);
         }
@@ -41,7 +41,6 @@ const AdminDashboard = () => {
 
         if (error) {
             alert('Error al eliminar el producto');
-            console.error(error);
         } else {
             fetchProducts();
         }
