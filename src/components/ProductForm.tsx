@@ -233,12 +233,21 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
                             Imagen del Producto
                         </label>
                         {imagePreview && (
-                            <div className="mb-4 aspect-[4/3] bg-sand overflow-hidden">
+                            <div className="mb-4 aspect-[4/3] bg-sand overflow-hidden relative">
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
                                     className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).style.display = 'none';
+                                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                                    }}
                                 />
+                                <div className="hidden absolute inset-0 flex items-center justify-center">
+                                    <p className="text-warm-gray/60 font-body text-sm">
+                                        Imagen anterior no disponible. Sube una nueva.
+                                    </p>
+                                </div>
                             </div>
                         )}
                         <label className="block cursor-pointer">
