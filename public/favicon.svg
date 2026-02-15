@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#FAF9F6" rx="8"/>
+  <g transform="translate(32, 32)">
+    <!-- Anillo izquierdo -->
+    <circle cx="-8" cy="0" r="10" fill="none" stroke="#D4AF37" stroke-width="2.5" opacity="0.9"/>
+    <circle cx="-8" cy="0" r="7" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Anillo derecho -->
+    <circle cx="8" cy="0" r="10" fill="none" stroke="#D4AF37" stroke-width="2.5" opacity="0.9"/>
+    <circle cx="8" cy="0" r="7" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Detalle central donde se cruzan -->
+    <circle cx="0" cy="0" r="2" fill="#D4AF37" opacity="0.3"/>
+  </g>
+</svg>
