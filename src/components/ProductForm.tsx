@@ -8,6 +8,8 @@ interface ProductFormProps {
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 
 const ProductForm = ({ product, onClose }: ProductFormProps) => {
     const [name, setName] = useState(product?.name || '');
@@ -24,6 +26,10 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                setError('Solo se permiten imágenes JPG, PNG o WEBP');
+                return;
+            }
             if (file.size > MAX_FILE_SIZE) {
                 setError('La imagen no debe superar los 5MB');
                 return;
@@ -40,22 +46,25 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
     };
 
     const uploadImage = async (file: File): Promise<string | null> => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-        const filePath = `${fileName}`;
+        const fileExt = (file.name.split('.').pop() || '').toLowerCase();
+        if (!ALLOWED_EXTENSIONS.includes(fileExt)) {
+            return null;
+        }
+        const randomBytes = crypto.getRandomValues(new Uint8Array(16));
+        const hex = Array.from(randomBytes, b => b.toString(16).padStart(2, '0')).join('');
+        const fileName = `${hex}-${Date.now()}.${fileExt}`;
 
         const { error: uploadError } = await supabase.storage
             .from('product-images')
-            .upload(filePath, file);
+            .upload(fileName, file, { contentType: file.type });
 
         if (uploadError) {
-            console.error('Error uploading image:', uploadError);
             return null;
         }
 
         const { data } = supabase.storage
             .from('product-images')
-            .getPublicUrl(filePath);
+            .getPublicUrl(fileName);
 
         return data.publicUrl;
     };
@@ -72,16 +81,21 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
             if (imageFile) {
                 const uploadedUrl = await uploadImage(imageFile);
                 if (!uploadedUrl) {
-                    throw new Error('Error al subir la imagen. Verifica que el bucket "product-images" exista y sea público en Supabase.');
+                    throw new Error('Error al subir la imagen. Intenta de nuevo.');
                 }
                 imageUrl = uploadedUrl;
             }
 
+            const parsedPrice = parseFloat(price);
+            if (isNaN(parsedPrice) || parsedPrice < 0) {
+                throw new Error('El precio debe ser un número válido mayor o igual a 0.');
+            }
+
             const productData: ProductInsert = {
-                name,
-                description: description || null,
-                price: parseFloat(price) || 0,
-                category: category || null,
+                name: name.trim(),
+                description: description.trim() || null,
+                price: parsedPrice,
+                category: category.trim() || null,
                 image_url: imageUrl,
                 in_stock: inStock,
             };
@@ -263,7 +277,7 @@ const ProductForm = ({ product, onClose }: ProductFormProps) => {
                             </div>
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept=".jpg,.jpeg,.png,.webp"
                                 onChange={handleImageChange}
                                 className="hidden"
                             />
