@@ -98,8 +98,11 @@ supabase login
 # Vincular proyecto
 supabase link --project-ref tu-proyecto-id
 
-# Desplegar función
+# Desplegar todas las funciones
 supabase functions deploy create-order --no-verify-jwt
+supabase functions deploy mercadopago-webhook --no-verify-jwt
+supabase functions deploy upload-bank-receipt --no-verify-jwt
+supabase functions deploy cleanup-expired-carts --no-verify-jwt
 ```
 
 ### 4️⃣ Configurar Secretos
@@ -109,12 +112,18 @@ En **Dashboard** → **Settings** → **Edge Functions** → **Secrets**:
 ```
 SUPABASE_URL=https://tu-proyecto.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
+MERCADOPAGO_ACCESS_TOKEN=tu_access_token_de_mercadopago
+PUBLIC_SITE_URL=https://tu-sitio.com (o http://localhost:5173 para desarrollo)
 ```
 
 ### 5️⃣ Habilitar Acceso Público
 
-En **Dashboard** → **Edge Functions** → `create-order` → **Settings**:
-- ✅ Habilita "Public access"
+En **Dashboard** → **Edge Functions**, habilita "Public access" en:
+- ✅ `create-order`
+- ✅ `mercadopago-webhook`
+- ✅ `upload-bank-receipt`
+
+(cleanup-expired-carts NO necesita acceso público - es solo para cron jobs)
 
 ---
 
@@ -173,25 +182,99 @@ WHERE trigger_schema = 'public';
 
 ---
 
-## 🔜 Próximas Fases
+## ✅ Fase 3: Mercado Pago - COMPLETADO
 
-### Fase 3: Mercado Pago (Pendiente)
-- [ ] SDK de Mercado Pago
-- [ ] Edge Function: `mercadopago-webhook`
-- [ ] Creación de preference
-- [ ] Botón de pago integrado
+### SDK y Edge Functions
 
-### Fase 4: Transferencias Bancarias (Pendiente)
-- [ ] Storage bucket: `payment-receipts`
-- [ ] Edge Function: `upload-bank-receipt`
-- [ ] Componente admin de revisión
-- [ ] RPC functions: `approve_bank_transfer`, `reject_bank_transfer`
+- ✅ SDK `@mercadopago/sdk-react` instalado
+- ✅ Edge Function `create-order` actualizada para crear preferences
+- ✅ Edge Function `mercadopago-webhook` - Recibir notificaciones de pago
+- ✅ Botón de pago integrado en OrderConfirmation
 
-### Fase 5: Mejoras Admin (Pendiente)
-- [ ] Dashboard de pedidos con filtros
-- [ ] Cambio de estados
-- [ ] Alertas de stock bajo
-- [ ] Job: `cleanup-expired-carts`
+### Configuración Requerida
+
+1. **Mercado Pago Dashboard:**
+   - Crear cuenta y obtener credenciales de prueba/producción
+   - Configurar webhook URL: `https://[tu-proyecto].supabase.co/functions/v1/mercadopago-webhook`
+
+2. **Variables de Entorno:**
+   - Frontend: `VITE_MERCADOPAGO_PUBLIC_KEY`
+   - Backend (Secrets): `MERCADOPAGO_ACCESS_TOKEN`
+
+---
+
+## ✅ Fase 4: Transferencias Bancarias - COMPLETADO
+
+### Storage y Edge Functions
+
+- ✅ Edge Function `upload-bank-receipt` - Subir comprobantes
+- ✅ Componente `ReceiptUpload` - UI para subir comprobantes
+- ✅ Migración `005_create_rpc_functions.sql` - Aprobar/Rechazar pagos
+- ✅ Componente admin `OrdersManagement` - Gestión de pedidos
+- ✅ Componente admin `ReceiptViewer` - Revisión y aprobación
+
+### Configuración Requerida
+
+1. **Storage Bucket:**
+   ```sql
+   -- Crear bucket en Dashboard → Storage
+   Nombre: payment-receipts
+   Tipo: Privado
+   Allowed MIME types: image/jpeg, image/png, image/webp, application/pdf
+   Max file size: 5MB
+   ```
+
+2. **RLS Policies para Storage:**
+   ```sql
+   -- Permitir upload público
+   CREATE POLICY "Anyone can upload receipts"
+   ON storage.objects FOR INSERT
+   WITH CHECK (bucket_id = 'payment-receipts');
+
+   -- Solo admins pueden leer
+   CREATE POLICY "Admins can read receipts"
+   ON storage.objects FOR SELECT
+   USING (bucket_id = 'payment-receipts' AND auth.role() = 'authenticated');
+   ```
+
+---
+
+## ✅ Fase 5: Mejoras Admin - COMPLETADO
+
+### Componentes y Edge Functions
+
+- ✅ Edge Function `cleanup-expired-carts` - Limpieza automática
+- ✅ Componente `LowStockAlert` - Alertas de stock bajo en tiempo real
+- ✅ Dashboard de pedidos con filtros avanzados
+- ✅ Búsqueda por orden/email/teléfono
+- ✅ Subscripción realtime a cambios de stock
+
+### Configuración Requerida
+
+1. **Cron Job (Opcional pero Recomendado):**
+
+   Configurar en un servicio externo (ej: cron-job.org) para llamar cada 30 minutos:
+   ```
+   URL: https://[tu-proyecto].supabase.co/functions/v1/cleanup-expired-carts
+   Method: POST
+   Headers:
+     Authorization: Bearer [SUPABASE_ANON_KEY]
+   ```
+
+   O usar Supabase Cron (si está disponible en tu plan):
+   ```sql
+   -- En pg_cron extension
+   SELECT cron.schedule(
+     'cleanup-expired-carts-job',
+     '*/30 * * * *', -- Cada 30 minutos
+     $$
+     SELECT net.http_post(
+       url := 'https://[tu-proyecto].supabase.co/functions/v1/cleanup-expired-carts',
+       headers := '{"Authorization": "Bearer [ANON_KEY]"}'::jsonb
+     );
+     $$
+   );
+   ```
 
 ---
 

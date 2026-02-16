@@ -176,13 +176,78 @@ serve(async (req) => {
         .eq('cart_session_id', orderRequest.cart_session_id);
     }
 
-    // If Mercado Pago, create preference (TODO: Implement in Phase 3)
+    // If Mercado Pago, create preference
     let mp_preference_id = null;
+    let init_point = null;
+
     if (orderRequest.payment_method === 'mercadopago') {
-      // TODO: Call Mercado Pago API to create preference
-      // const preference = await createMercadoPagoPreference(order, orderItems);
-      // mp_preference_id = preference.id;
-      console.log('Mercado Pago integration pending - Phase 3');
+      try {
+        const mpAccessToken = Deno.env.get('MERCADOPAGO_ACCESS_TOKEN');
+
+        if (!mpAccessToken) {
+          throw new Error('Mercado Pago access token not configured');
+        }
+
+        // Create preference
+        const preferenceData = {
+          items: orderItems.map(item => ({
+            title: item.product_name,
+            description: item.product_description || '',
+            picture_url: item.product_image_url || '',
+            category_id: item.product_category || 'others',
+            quantity: item.quantity,
+            unit_price: parseFloat(item.unit_price.toString()),
+          })),
+          payer: {
+            name: orderRequest.customer_name,
+            email: orderRequest.customer_email,
+            phone: {
+              number: orderRequest.customer_phone
+            }
+          },
+          back_urls: {
+            success: `${Deno.env.get('PUBLIC_SITE_URL') || 'http://localhost:5173'}/order-confirmation/${order.id}?status=approved`,
+            failure: `${Deno.env.get('PUBLIC_SITE_URL') || 'http://localhost:5173'}/order-confirmation/${order.id}?status=rejected`,
+            pending: `${Deno.env.get('PUBLIC_SITE_URL') || 'http://localhost:5173'}/order-confirmation/${order.id}?status=pending`
+          },
+          auto_return: 'approved',
+          external_reference: order.id,
+          notification_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/mercadopago-webhook`,
+          statement_descriptor: 'ESLY CASAMIENTOS',
+          expires: true,
+          expiration_date_from: new Date().toISOString(),
+          expiration_date_to: new Date(Date.now() + 15 * 60 * 1000).toISOString(), // 15 min
+        };
+
+        const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${mpAccessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(preferenceData),
+        });
+
+        if (!mpResponse.ok) {
+          const errorText = await mpResponse.text();
+          throw new Error(`Mercado Pago API error: ${errorText}`);
+        }
+
+        const preference = await mpResponse.json();
+        mp_preference_id = preference.id;
+        init_point = preference.init_point;
+
+        // Update payment with preference ID
+        await supabaseClient
+          .from('payments')
+          .update({ mp_preference_id })
+          .eq('id', payment.id);
+
+      } catch (mpError) {
+        console.error('Error creating Mercado Pago preference:', mpError);
+        // Don't fail the order, just log the error
+        // User can still pay via bank transfer
+      }
     }
 
     return new Response(
@@ -193,7 +258,8 @@ serve(async (req) => {
           order_number: order.order_number,
           total: order.total,
           payment_method: order.payment_method,
-          mp_preference_id
+          mp_preference_id,
+          init_point
         },
         payment: {
           id: payment.id,

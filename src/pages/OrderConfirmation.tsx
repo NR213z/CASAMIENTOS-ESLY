@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { supabase, Order } from '../lib/supabase';
 import { CheckCircle, AlertCircle, Building2, Loader2, ArrowRight } from 'lucide-react';
+import ReceiptUpload from '../components/bank-transfer/ReceiptUpload';
 
 interface LocationState {
   orderData?: {
@@ -11,6 +12,7 @@ interface LocationState {
       total: number;
       payment_method: 'mercadopago' | 'bank_transfer';
       mp_preference_id?: string | null;
+      init_point?: string | null;
     };
   };
 }
@@ -22,6 +24,7 @@ export default function OrderConfirmation() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [initPoint, setInitPoint] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -63,6 +66,7 @@ export default function OrderConfirmation() {
         payment_status: 'pending'
       };
       setOrder(partialOrder as Order);
+      setInitPoint(state.orderData.order.init_point || null);
       setLoading(false);
     } else {
       // Fetch from database
@@ -145,12 +149,27 @@ export default function OrderConfirmation() {
             <p className="text-gray-700 mb-4">
               Haz clic en el botón de abajo para completar tu pago de forma segura a través de Mercado Pago.
             </p>
-            <button className="w-full py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
-              Ir a Mercado Pago
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
-            <p className="text-sm text-gray-600 mt-3">
-              <strong>Nota:</strong> La integración de Mercado Pago estará disponible en la Fase 3.
+            {initPoint ? (
+              <a
+                href={initPoint}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center"
+              >
+                Ir a Mercado Pago
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            ) : (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p className="text-sm text-yellow-800">
+                  <strong>Nota:</strong> El enlace de pago de Mercado Pago no está disponible.
+                  Por favor contacta con soporte o selecciona transferencia bancaria como método alternativo.
+                </p>
+              </div>
+            )}
+            <p className="text-xs text-gray-500 mt-3 text-center">
+              Serás redirigido a Mercado Pago para completar el pago de forma segura.
+              Tu reserva de stock expira en 15 minutos.
             </p>
           </div>
         ) : (
@@ -200,16 +219,7 @@ export default function OrderConfirmation() {
             </div>
 
             <div className="border-t border-green-200 pt-4">
-              <h3 className="font-bold text-gray-900 mb-2">Subir Comprobante de Pago</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Una vez realizada la transferencia, sube tu comprobante aquí para que podamos procesar tu pedido:
-              </p>
-              <button className="w-full py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors">
-                Subir Comprobante
-              </button>
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                <strong>Nota:</strong> La funcionalidad de subir comprobante estará disponible en la Fase 4.
-              </p>
+              <ReceiptUpload orderId={order.id} />
             </div>
           </div>
         )}

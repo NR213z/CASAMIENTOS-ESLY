@@ -27,24 +27,58 @@ fi
 echo "✅ Autenticado correctamente"
 echo ""
 
-# Desplegar create-order
+# Deploy functions
 echo "📦 Desplegando create-order..."
 supabase functions deploy create-order --no-verify-jwt
-
-if [ $? -eq 0 ]; then
-    echo "✅ create-order desplegada correctamente"
-else
+if [ $? -ne 0 ]; then
     echo "❌ Error al desplegar create-order"
     exit 1
 fi
+echo "✅ create-order desplegada"
+
+echo ""
+echo "📦 Desplegando mercadopago-webhook..."
+supabase functions deploy mercadopago-webhook --no-verify-jwt
+if [ $? -ne 0 ]; then
+    echo "❌ Error al desplegar mercadopago-webhook"
+    exit 1
+fi
+echo "✅ mercadopago-webhook desplegada"
+
+echo ""
+echo "📦 Desplegando upload-bank-receipt..."
+supabase functions deploy upload-bank-receipt --no-verify-jwt
+if [ $? -ne 0 ]; then
+    echo "❌ Error al desplegar upload-bank-receipt"
+    exit 1
+fi
+echo "✅ upload-bank-receipt desplegada"
+
+echo ""
+echo "📦 Desplegando cleanup-expired-carts..."
+supabase functions deploy cleanup-expired-carts --no-verify-jwt
+if [ $? -ne 0 ]; then
+    echo "❌ Error al desplegar cleanup-expired-carts"
+    exit 1
+fi
+echo "✅ cleanup-expired-carts desplegada"
 
 echo ""
 echo "🎉 ¡Todas las Edge Functions desplegadas exitosamente!"
 echo ""
 echo "📋 Próximos pasos:"
 echo "1. Ve a Supabase Dashboard → Edge Functions"
-echo "2. Habilita 'Public access' en create-order"
+echo "2. Habilita 'Public access' en:"
+echo "   - create-order"
+echo "   - mercadopago-webhook"
+echo "   - upload-bank-receipt"
 echo "3. Configura los secretos en Settings → Edge Functions → Secrets:"
 echo "   - SUPABASE_URL"
 echo "   - SUPABASE_SERVICE_ROLE_KEY"
+echo "   - MERCADOPAGO_ACCESS_TOKEN"
+echo "   - PUBLIC_SITE_URL"
+echo "4. Configura el webhook en Mercado Pago Dashboard:"
+echo "   URL: https://[tu-proyecto].supabase.co/functions/v1/mercadopago-webhook"
+echo "5. Crea el bucket 'payment-receipts' en Storage (privado con RLS)"
+echo "6. Configura un cron job para cleanup-expired-carts (cada 30 min)"
 echo ""
