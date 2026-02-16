@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import CartIcon from "@/components/cart/CartIcon";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 const navLinks = [
   { label: "Inicio", href: "#inicio", isRoute: false },
@@ -15,6 +17,7 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -73,7 +76,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -84,6 +87,7 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
+          <CartIcon onClick={() => setCartOpen(true)} />
         </div>
 
         {/* Mobile toggle */}
@@ -110,9 +114,21 @@ const Navbar = () => {
                 {link.label}
               </a>
             ))}
+            <button
+              onClick={() => {
+                setOpen(false);
+                setCartOpen(true);
+              }}
+              className="text-sm uppercase tracking-[0.2em] font-body text-foreground/70 hover:text-foreground transition-colors flex items-center gap-2"
+            >
+              <span>Carrito</span>
+            </button>
           </div>
         </div>
       )}
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </nav>
   );
 };

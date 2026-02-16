@@ -40,3 +40,46 @@ export interface ProductUpdate {
     in_stock?: boolean;
     updated_at?: string;
 }
+
+// Cart types
+export interface CartSession {
+    id: string;
+    session_id: string;
+    expires_at: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CartItem {
+    id: string;
+    cart_session_id: string;
+    product_id: string;
+    quantity: number;
+    price_snapshot: number;
+    created_at: string;
+    updated_at: string;
+    product?: Product;
+}
+
+export interface CartItemInsert {
+    cart_session_id: string;
+    product_id: string;
+    quantity: number;
+    price_snapshot: number;
+}
+
+// Order types (to be used in later phases)
+export type OrderStatus =
+    | 'pending_payment'
+    | 'payment_processing'
+    | 'payment_review'
+    | 'payment_confirmed'
+    | 'preparing'
+    | 'shipped'
+    | 'delivered'
+    | 'cancelled'
+    | 'refunded';
+
+export type PaymentMethod = 'mercadopago' | 'bank_transfer';
+
+export type PaymentStatus = 'pending' | 'approved' | 'rejected' | 'refunded';
