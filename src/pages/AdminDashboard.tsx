@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase, Product } from '@/lib/supabase';
 import ProductForm from '@/components/ProductForm';
-import { LogOut, Plus, Edit, Trash2 } from 'lucide-react';
+import OrdersManagement from '@/components/admin/OrdersManagement';
+import LowStockAlert from '@/components/admin/LowStockAlert';
+import { LogOut, Plus, Edit, Trash2, Package, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -12,6 +14,7 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
 
     useEffect(() => {
         fetchProducts();
@@ -87,18 +90,48 @@ const AdminDashboard = () => {
 
             {/* Main Content */}
             <main className="container mx-auto px-6 py-12">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="font-display text-2xl md:text-3xl font-light text-foreground">
-                        Productos
-                    </h2>
+                {/* Tabs */}
+                <div className="flex gap-4 mb-8 border-b border-gold/20">
                     <button
-                        onClick={() => setShowForm(true)}
-                        className="flex items-center gap-2 bg-charcoal text-primary-foreground px-6 py-3 text-xs uppercase tracking-[0.2em] font-body hover:bg-charcoal/90 transition-colors"
+                        onClick={() => setActiveTab('products')}
+                        className={`flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-[0.2em] font-body transition-colors border-b-2 ${
+                            activeTab === 'products'
+                                ? 'border-gold text-foreground'
+                                : 'border-transparent text-warm-gray hover:text-foreground'
+                        }`}
                     >
-                        <Plus size={16} />
-                        Nuevo Producto
+                        <ShoppingBag size={16} />
+                        Productos
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('orders')}
+                        className={`flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-[0.2em] font-body transition-colors border-b-2 ${
+                            activeTab === 'orders'
+                                ? 'border-gold text-foreground'
+                                : 'border-transparent text-warm-gray hover:text-foreground'
+                        }`}
+                    >
+                        <Package size={16} />
+                        Pedidos
                     </button>
                 </div>
+
+                {activeTab === 'products' ? (
+                    <>
+                        <LowStockAlert />
+
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="font-display text-2xl md:text-3xl font-light text-foreground">
+                                Productos
+                            </h2>
+                            <button
+                                onClick={() => setShowForm(true)}
+                                className="flex items-center gap-2 bg-charcoal text-primary-foreground px-6 py-3 text-xs uppercase tracking-[0.2em] font-body hover:bg-charcoal/90 transition-colors"
+                            >
+                                <Plus size={16} />
+                                Nuevo Producto
+                            </button>
+                        </div>
 
                 {loading ? (
                     <div className="text-center py-20">
@@ -171,7 +204,11 @@ const AdminDashboard = () => {
                             </div>
                         ))}
                     </div>
-                )}
+                )
+                    </>
+                ) : (
+                    <OrdersManagement />
+                )}}
             </main>
 
             {/* Product Form Modal */}

@@ -3,16 +3,32 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useScrollFadeIn } from "@/hooks/useScrollFadeIn";
 import { supabase, Product } from "@/lib/supabase";
+import { useCart } from "@/contexts/CartContext";
+import { ShoppingCart } from "lucide-react";
 
 const Products = () => {
   const containerRef = useScrollFadeIn();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { addToCart } = useCart();
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const handleAddToCart = async (productId: string) => {
+    try {
+      setAddingToCart(productId);
+      await addToCart(productId, 1);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Error al agregar al carrito. Intenta de nuevo.');
+    } finally {
+      setAddingToCart(null);
+    }
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -107,9 +123,26 @@ const Products = () => {
                         {product.category}
                       </p>
                     )}
-                    <p className="text-lg text-gold font-body">
+                    <p className="text-lg text-gold font-body mb-4">
                       ${product.price.toLocaleString()}
                     </p>
+                    <button
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={!product.in_stock || addingToCart === product.id}
+                      className="w-full flex items-center justify-center gap-2 bg-charcoal text-primary-foreground py-3 text-xs uppercase tracking-[0.2em] font-body hover:bg-charcoal/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {addingToCart === product.id ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground" />
+                          Agregando...
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart size={16} />
+                          {product.in_stock ? 'Agregar al Carrito' : 'Sin Stock'}
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
               ))}
