@@ -12,7 +12,8 @@
       "Bash(xargs:*)",
       "Bash(dir:*)",
       "Bash(findstr:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(gh pr create:*)"
     ]
   }
 }
