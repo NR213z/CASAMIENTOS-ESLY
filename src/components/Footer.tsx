@@ -12,6 +12,17 @@ const Footer = () => {
         <p className="text-xs text-primary-foreground/30 font-body">
           © {new Date().getFullYear()} Bora Viver. Todos los derechos reservados.
         </p>
+        <p className="text-xs text-primary-foreground/20 font-body mt-4">
+          Página creada por:{" "}
+          <a
+            href="https://metaweb-three.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-foreground/40 hover:text-gold transition-colors duration-300"
+          >
+            Meta Web
+          </a>
+        </p>
       </div>
     </footer>
   );
