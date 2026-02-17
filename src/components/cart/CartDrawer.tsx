@@ -26,12 +26,12 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-charcoal/50 backdrop-blur-sm z-50"
+                className="fixed inset-0 bg-charcoal/50 backdrop-blur-sm z-[60]"
                 onClick={onClose}
             />
 
             {/* Drawer */}
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background z-50 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background z-[60] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-warm-gray/20 flex items-center justify-between">
                     <h2 className="font-display text-2xl font-light text-foreground">
@@ -57,8 +57,8 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                         <div className="flex flex-col items-center justify-center h-full py-20 text-center px-4">
                             <div className="w-16 h-16 mb-6 rounded-full border-2 border-warm-gray/20 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-warm-gray/40">
-                                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
-                                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                    <circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" />
+                                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
                                 </svg>
                             </div>
                             <p className="text-foreground font-display text-lg mb-2">
