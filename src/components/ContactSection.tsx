@@ -98,7 +98,7 @@ const ContactSection = () => {
                   <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground mb-1">
                     Teléfono
                   </p>
-                  <p className="font-body text-foreground">+54 9 11 4025-3383</p>
+                  <p className="font-body text-foreground">+54 9 11 6907-4807</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -107,7 +107,7 @@ const ContactSection = () => {
                   <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground mb-1">
                     Email
                   </p>
-                  <p className="font-body text-foreground">romina@rominaferraretto.com</p>
+                  <p className="font-body text-foreground">boravivercelebrations@gmail.com</p>
                 </div>
               </div>
 
