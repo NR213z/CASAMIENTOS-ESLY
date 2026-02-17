@@ -1,140 +1,230 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase, Product, CartItem } from '@/lib/supabase';
-
-const CART_TOKEN_KEY = 'cart_session_token';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { supabase, Product, CartItem, CartItemInsert } from '@/lib/supabase';
 
 interface CartContextType {
+    cartSessionId: string;
     items: CartItem[];
-    itemCount: number;
-    total: number;
-    addItem: (product: Product, quantity?: number) => Promise<void>;
-    removeItem: (cartItemId: string) => Promise<void>;
-    updateQuantity: (cartItemId: string, quantity: number) => Promise<void>;
-    clearCart: () => Promise<void>;
-    sessionToken: string | null;
     loading: boolean;
+    addToCart: (productId: string, quantity?: number) => Promise<void>;
+    updateQuantity: (productId: string, quantity: number) => Promise<void>;
+    removeFromCart: (productId: string) => Promise<void>;
+    clearCart: () => Promise<void>;
+    getTotalItems: () => number;
+    getTotalPrice: () => number;
 }
 
-const CartContext = createContext<CartContextType | null>(null);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const useCart = () => {
-    const ctx = useContext(CartContext);
-    if (!ctx) throw new Error('useCart must be used within CartProvider');
-    return ctx;
-};
-
-const getOrCreateToken = (): string => {
-    let token = localStorage.getItem(CART_TOKEN_KEY);
-    if (!token) {
-        token = crypto.randomUUID();
-        localStorage.setItem(CART_TOKEN_KEY, token);
+    const context = useContext(CartContext);
+    if (!context) {
+        throw new Error('useCart must be used within a CartProvider');
     }
-    return token;
+    return context;
 };
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+    const [cartSessionId, setCartSessionId] = useState<string>('');
     const [items, setItems] = useState<CartItem[]>([]);
-    const [sessionToken, setSessionToken] = useState<string | null>(null);
-    const [sessionId, setSessionId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
+    // Initialize cart session on mount
     useEffect(() => {
-        const token = getOrCreateToken();
-        setSessionToken(token);
-        fetchCart(token);
+        initializeCart();
     }, []);
 
-    const fetchCart = async (token: string) => {
-        setLoading(true);
+    const initializeCart = async () => {
         try {
-            // Get or create cart session
-            let { data: session } = await supabase
-                .from('cart_sessions')
-                .select('id')
-                .eq('session_token', token)
-                .single();
+            // Get or create session ID from localStorage
+            let sessionId = localStorage.getItem('cartSessionId');
 
-            if (!session) {
-                const { data: newSession, error } = await supabase
+            if (!sessionId) {
+                // Generate new session ID
+                sessionId = crypto.randomUUID();
+                localStorage.setItem('cartSessionId', sessionId);
+
+                // Create cart session in database
+                const { error } = await supabase
                     .from('cart_sessions')
-                    .insert({ session_token: token })
-                    .select('id')
-                    .single();
+                    .insert({ session_id: sessionId });
+
                 if (error) throw error;
-                session = newSession;
             }
 
-            setSessionId(session.id);
-
-            const { data: cartItems, error: itemsError } = await supabase
-                .from('cart_items')
-                .select('*, product:products(*)')
-                .eq('cart_session_id', session.id);
-
-            if (itemsError) throw itemsError;
-            setItems(cartItems || []);
-        } catch (err) {
-            console.error('Error fetching cart:', err);
+            setCartSessionId(sessionId);
+            await fetchCart(sessionId);
+        } catch (error) {
+            console.error('Error initializing cart:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const addItem = async (product: Product, quantity = 1) => {
-        if (!sessionId) return;
+    const fetchCart = async (sessionId: string) => {
+        try {
+            const { data, error } = await supabase
+                .from('cart_items')
+                .select(`
+                    *,
+                    product:products(*)
+                `)
+                .eq('cart_session_id', (
+                    await supabase
+                        .from('cart_sessions')
+                        .select('id')
+                        .eq('session_id', sessionId)
+                        .single()
+                ).data?.id || '');
 
-        // Check if already in cart
-        const existing = items.find(i => i.product_id === product.id);
-        if (existing) {
-            await updateQuantity(existing.id, existing.quantity + quantity);
-            return;
+            if (error) throw error;
+
+            setItems(data || []);
+        } catch (error) {
+            console.error('Error fetching cart:', error);
         }
+    };
 
+    const getCartSessionDbId = async (): Promise<string | null> => {
         const { data, error } = await supabase
-            .from('cart_items')
-            .insert({
-                cart_session_id: sessionId,
-                product_id: product.id,
-                quantity,
-                unit_price: product.price,
-            })
-            .select('*, product:products(*)')
+            .from('cart_sessions')
+            .select('id')
+            .eq('session_id', cartSessionId)
             .single();
 
-        if (error) { console.error(error); return; }
-        setItems(prev => [...prev, data]);
+        if (error || !data) return null;
+        return data.id;
     };
 
-    const removeItem = async (cartItemId: string) => {
-        const { error } = await supabase.from('cart_items').delete().eq('id', cartItemId);
-        if (error) { console.error(error); return; }
-        setItems(prev => prev.filter(i => i.id !== cartItemId));
+    const addToCart = async (productId: string, quantity: number = 1) => {
+        try {
+            const cartDbId = await getCartSessionDbId();
+            if (!cartDbId) throw new Error('Cart session not found');
+
+            // Get product details for price snapshot
+            const { data: product, error: productError } = await supabase
+                .from('products')
+                .select('price')
+                .eq('id', productId)
+                .single();
+
+            if (productError || !product) throw new Error('Product not found');
+
+            // Check if item already exists in cart
+            const existingItem = items.find(item => item.product_id === productId);
+
+            if (existingItem) {
+                // Update quantity
+                const { error } = await supabase
+                    .from('cart_items')
+                    .update({ quantity: existingItem.quantity + quantity })
+                    .eq('id', existingItem.id);
+
+                if (error) throw error;
+            } else {
+                // Add new item
+                const cartItem: CartItemInsert = {
+                    cart_session_id: cartDbId,
+                    product_id: productId,
+                    quantity,
+                    price_snapshot: product.price
+                };
+
+                const { error } = await supabase
+                    .from('cart_items')
+                    .insert(cartItem);
+
+                if (error) throw error;
+            }
+
+            // Refresh cart
+            await fetchCart(cartSessionId);
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            throw error;
+        }
     };
 
-    const updateQuantity = async (cartItemId: string, quantity: number) => {
-        if (quantity <= 0) { await removeItem(cartItemId); return; }
+    const updateQuantity = async (productId: string, quantity: number) => {
+        try {
+            const item = items.find(item => item.product_id === productId);
+            if (!item) return;
 
-        const { error } = await supabase
-            .from('cart_items')
-            .update({ quantity })
-            .eq('id', cartItemId);
+            if (quantity <= 0) {
+                await removeFromCart(productId);
+                return;
+            }
 
-        if (error) { console.error(error); return; }
-        setItems(prev => prev.map(i => i.id === cartItemId ? { ...i, quantity } : i));
+            const { error } = await supabase
+                .from('cart_items')
+                .update({ quantity })
+                .eq('id', item.id);
+
+            if (error) throw error;
+
+            await fetchCart(cartSessionId);
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+            throw error;
+        }
+    };
+
+    const removeFromCart = async (productId: string) => {
+        try {
+            const item = items.find(item => item.product_id === productId);
+            if (!item) return;
+
+            const { error } = await supabase
+                .from('cart_items')
+                .delete()
+                .eq('id', item.id);
+
+            if (error) throw error;
+
+            await fetchCart(cartSessionId);
+        } catch (error) {
+            console.error('Error removing from cart:', error);
+            throw error;
+        }
     };
 
     const clearCart = async () => {
-        if (!sessionId) return;
-        await supabase.from('cart_items').delete().eq('cart_session_id', sessionId);
-        setItems([]);
+        try {
+            const cartDbId = await getCartSessionDbId();
+            if (!cartDbId) return;
+
+            const { error } = await supabase
+                .from('cart_items')
+                .delete()
+                .eq('cart_session_id', cartDbId);
+
+            if (error) throw error;
+
+            setItems([]);
+        } catch (error) {
+            console.error('Error clearing cart:', error);
+            throw error;
+        }
     };
 
-    const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
-    const total = items.reduce((sum, i) => sum + i.unit_price * i.quantity, 0);
+    const getTotalItems = () => {
+        return items.reduce((total, item) => total + item.quantity, 0);
+    };
 
-    return (
-        <CartContext.Provider value={{ items, itemCount, total, addItem, removeItem, updateQuantity, clearCart, sessionToken, loading }}>
-            {children}
-        </CartContext.Provider>
-    );
+    const getTotalPrice = () => {
+        return items.reduce((total, item) => total + (item.price_snapshot * item.quantity), 0);
+    };
+
+    const value = {
+        cartSessionId,
+        items,
+        loading,
+        addToCart,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        getTotalItems,
+        getTotalPrice
+    };
+
+    return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

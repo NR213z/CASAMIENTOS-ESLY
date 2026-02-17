@@ -17,7 +17,7 @@ const AdminLogin = () => {
         setError('');
         setLoading(true);
 
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(email.trim(), password);
 
         if (error) {
             setError('Credenciales incorrectas. Por favor, intenta de nuevo.');

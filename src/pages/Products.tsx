@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useScrollFadeIn } from "@/hooks/useScrollFadeIn";
@@ -9,31 +8,38 @@ import { ShoppingCart } from "lucide-react";
 
 const Products = () => {
   const containerRef = useScrollFadeIn();
-  const navigate = useNavigate();
-  const { addItem, itemCount } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
-
-  const handleAddToCart = async (product: Product) => {
-    await addItem(product);
-    setAddedIds(prev => new Set(prev).add(product.id));
-    setTimeout(() => setAddedIds(prev => { const s = new Set(prev); s.delete(product.id); return s; }), 1500);
-  };
+  const [error, setError] = useState('');
+  const { addToCart } = useCart();
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  const handleAddToCart = async (productId: string) => {
+    try {
+      setAddingToCart(productId);
+      await addToCart(productId, 1);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Error al agregar al carrito. Intenta de nuevo.');
+    } finally {
+      setAddingToCart(null);
+    }
+  };
+
   const fetchProducts = async () => {
     setLoading(true);
+    setError('');
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching products:', error);
+      setError(error.message);
     } else {
       setProducts(data || []);
     }
@@ -43,19 +49,6 @@ const Products = () => {
   return (
     <div ref={containerRef}>
       <Navbar />
-      {/* Cart Button Floating */}
-      {itemCount > 0 && (
-        <button
-          onClick={() => navigate('/carrito')}
-          className="fixed bottom-8 right-8 z-50 bg-charcoal text-primary-foreground flex items-center gap-3 px-6 py-4 shadow-lg hover:bg-charcoal/90 transition-colors"
-        >
-          <ShoppingCart size={18} />
-          <span className="font-body text-xs uppercase tracking-[0.2em]">Ver carrito</span>
-          <span className="bg-gold text-charcoal text-xs font-body w-5 h-5 rounded-full flex items-center justify-center font-medium">
-            {itemCount}
-          </span>
-        </button>
-      )}
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-cream to-background">
@@ -77,12 +70,17 @@ const Products = () => {
       {/* Products Grid */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-6">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm mb-6">
+              Error: {error}
+            </div>
+          )}
           {loading ? (
             <div className="text-center py-20">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
               <p className="text-warm-gray font-body">Cargando productos...</p>
             </div>
-          ) : products.length === 0 ? (
+          ) : products.length === 0 && !error ? (
             <div className="mt-20 text-center fade-in-section">
               <div className="inline-block border border-gold/30 px-8 py-6 max-w-2xl">
                 <p className="text-sm md:text-base text-foreground/70 font-body font-light leading-relaxed">
@@ -128,22 +126,23 @@ const Products = () => {
                     <p className="text-lg text-gold font-body mb-4">
                       ${product.price.toLocaleString()}
                     </p>
-                    {product.in_stock ? (
-                      <button
-                        onClick={() => handleAddToCart(product)}
-                        className={`w-full py-3 text-xs uppercase tracking-[0.2em] font-body transition-colors ${
-                          addedIds.has(product.id)
-                            ? 'bg-gold text-charcoal'
-                            : 'bg-charcoal text-primary-foreground hover:bg-charcoal/90'
-                        }`}
-                      >
-                        {addedIds.has(product.id) ? '¡Agregado!' : 'Agregar al carrito'}
-                      </button>
-                    ) : (
-                      <p className="text-xs uppercase tracking-[0.2em] text-warm-gray/50 font-body py-3 border border-warm-gray/20">
-                        Sin stock
-                      </p>
-                    )}
+                    <button
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={!product.in_stock || addingToCart === product.id}
+                      className="w-full flex items-center justify-center gap-2 bg-charcoal text-primary-foreground py-3 text-xs uppercase tracking-[0.2em] font-body hover:bg-charcoal/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {addingToCart === product.id ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground" />
+                          Agregando...
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart size={16} />
+                          {product.in_stock ? 'Agregar al Carrito' : 'Sin Stock'}
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
               ))}
