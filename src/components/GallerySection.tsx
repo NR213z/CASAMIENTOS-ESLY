@@ -18,7 +18,7 @@ const GallerySection = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 fade-in-section">
           <p className="text-xs uppercase tracking-[0.3em] text-gold font-body mb-3">
-            Portfolio
+            Portafolio
           </p>
           <h2 className="font-display text-3xl md:text-5xl font-light text-foreground">
             Nuestra <span className="italic">Galería</span>

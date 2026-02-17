@@ -18,7 +18,7 @@ const HeroSection = () => {
           className="text-xs uppercase tracking-[0.4em] text-primary-foreground/80 font-body mb-4 animate-fade-in"
           style={{ animationDelay: "0.3s" }}
         >
-          Social & Corporate Events
+          Eventos Sociales & Corporativos
         </p>
         <h1
           className="font-display text-5xl md:text-7xl lg:text-8xl text-primary-foreground font-light leading-tight animate-fade-in"
@@ -32,7 +32,7 @@ const HeroSection = () => {
           className="mt-6 text-sm md:text-base text-primary-foreground/70 font-body font-light max-w-lg animate-fade-in"
           style={{ animationDelay: "0.9s" }}
         >
-          We Create, You Celebrate
+          Nosotros Creamos, Tú Celebras
         </p>
         <a
           href="#contacto"
@@ -47,7 +47,7 @@ const HeroSection = () => {
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in" style={{ animationDelay: "1.5s" }}>
         <div className="w-px h-12 bg-primary-foreground/40 mx-auto mb-2" />
         <p className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/50 font-body">
-          Scroll
+          Deslizar
         </p>
       </div>
     </section>

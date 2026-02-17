@@ -8,7 +8,7 @@ const testimonials = [
   },
   {
     name: "Jen Gonzalez",
-    text: "Romi and her team were A++. Everything was planned and accounted for from day one. She omits a level of professionalism and confidence that really allows you to relax. If you are considering Romi, don't hesitate.",
+    text: "Romi y su equipo fueron A++. Todo estuvo planificado y previsto desde el primer día. Transmite un nivel de profesionalismo y confianza que realmente te permite relajarte. Si estás considerando a Romi, no lo dudes.",
   },
   {
     name: "Sol Espinosa",

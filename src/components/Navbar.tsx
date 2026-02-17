@@ -21,6 +21,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Only show transparent navbar on home page
+  const isHomePage = location.pathname === '/';
+  const isTransparent = isHomePage && !scrolled;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
@@ -61,16 +65,19 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-        ? "bg-background/95 backdrop-blur-md shadow-sm py-3"
-        : "bg-transparent py-6"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isTransparent
+          ? "bg-transparent py-6"
+          : "bg-background/95 backdrop-blur-md shadow-sm py-3"
+      }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6">
         <a
           href="/"
           onClick={handleLogoClick}
-          className="font-display text-xl tracking-wider text-foreground"
+          className={`font-display text-xl tracking-wider transition-colors duration-500 ${
+            isTransparent ? "text-primary-foreground" : "text-foreground"
+          }`}
         >
           Bora <span className="italic font-light">Viver</span>
         </a>
@@ -82,18 +89,26 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link)}
-              className="text-xs uppercase tracking-[0.2em] font-body font-medium text-foreground/70 hover:text-foreground transition-colors duration-300"
+              className={`text-xs uppercase tracking-[0.2em] font-body font-medium transition-colors duration-300 ${
+                isTransparent
+                  ? "text-primary-foreground/80 hover:text-primary-foreground"
+                  : "text-foreground/70 hover:text-foreground"
+              }`}
             >
               {link.label}
             </a>
           ))}
-          <CartIcon onClick={() => setCartOpen(true)} />
+          <div className={`transition-colors duration-500 ${isTransparent ? "text-primary-foreground" : "text-foreground"}`}>
+            <CartIcon onClick={() => setCartOpen(true)} />
+          </div>
         </div>
 
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground"
+          className={`md:hidden transition-colors duration-500 ${
+            isTransparent ? "text-primary-foreground" : "text-foreground"
+          }`}
           aria-label="Menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}
