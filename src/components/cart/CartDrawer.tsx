@@ -111,7 +111,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                             <div className="space-y-2">
                                 <div className="flex justify-between font-body text-sm">
                                     <span className="text-warm-gray">
-                                        Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                                        Subtotal ({itemCount} {itemCount === 1 ? 'producto' : 'productos'})
                                     </span>
                                     <span className="text-foreground">
                                         ${total.toLocaleString()}

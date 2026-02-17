@@ -32,7 +32,7 @@ const HeroSection = () => {
           className="mt-6 text-sm md:text-base text-primary-foreground/70 font-body font-light max-w-lg animate-fade-in"
           style={{ animationDelay: "0.9s" }}
         >
-          Nosotros Creamos, Tú Celebras
+          Nosotros Creamos, Vos Celebrás
         </p>
         <a
           href="#contacto"
