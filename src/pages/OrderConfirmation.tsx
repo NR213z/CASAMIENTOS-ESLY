@@ -18,6 +18,32 @@ interface LocationState {
   };
 }
 
+const translatePaymentStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    'pending': 'Pendiente de Pago',
+    'pending_payment': 'Pendiente de Pago',
+    'approved': 'Aprobado',
+    'completed': 'Completado',
+    'rejected': 'Rechazado',
+    'cancelled': 'Cancelado',
+    'payment_review': 'En Revisión',
+  };
+  return statusMap[status] || status;
+};
+
+const translateOrderStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    'pending_payment': 'Pendiente de Pago',
+    'payment_received': 'Pago Recibido',
+    'confirmed': 'Confirmado',
+    'in_preparation': 'En Preparación',
+    'ready': 'Listo para Entrega',
+    'delivered': 'Entregado',
+    'cancelled': 'Cancelado',
+  };
+  return statusMap[status] || status;
+};
+
 export default function OrderConfirmation() {
   const { orderId } = useParams<{ orderId: string }>();
   const location = useLocation();
@@ -129,9 +155,15 @@ export default function OrderConfirmation() {
 
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex justify-between">
-              <span>Estado:</span>
+              <span>Estado del Pedido:</span>
               <span className="font-medium text-yellow-600">
-                {order.status === 'pending_payment' ? 'Pendiente de pago' : order.status}
+                {translateOrderStatus(order.status)}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span>Estado del Pago:</span>
+              <span className="font-medium text-yellow-600">
+                {translatePaymentStatus(order.payment_status)}
               </span>
             </div>
             <div className="flex justify-between">
