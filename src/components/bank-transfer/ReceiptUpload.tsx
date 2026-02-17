@@ -63,24 +63,56 @@ export default function ReceiptUpload({ orderId, onUploadSuccess }: ReceiptUploa
       setUploading(true);
       setError(null);
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('order_id', orderId);
-      if (bankReference.trim()) {
-        formData.append('bank_reference_number', bankReference.trim());
+      // 1. Upload file directly to 'receipts' bucket
+      const fileExt = file.name.split('.').pop();
+      const fileName = `receipts/${orderId}_${crypto.randomUUID()}.${fileExt}`;
+
+      const { error: storageError } = await supabase.storage
+        .from('receipts')
+        .upload(fileName, file, { contentType: file.type, upsert: false });
+
+      if (storageError) throw new Error(`Error al subir archivo: ${storageError.message}`);
+
+      // 2. Check if payment record exists for this order
+      const { data: existingPayment } = await supabase
+        .from('payments')
+        .select('id')
+        .eq('order_id', orderId)
+        .eq('payment_method', 'bank_transfer')
+        .single();
+
+      if (existingPayment) {
+        // Update existing payment
+        const { error: updateErr } = await supabase
+          .from('payments')
+          .update({
+            bank_receipt_url: fileName,
+            bank_reference_number: bankReference.trim() || null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existingPayment.id);
+        if (updateErr) throw updateErr;
+      } else {
+        // Create new payment record
+        const { error: insertErr } = await supabase
+          .from('payments')
+          .insert({
+            order_id: orderId,
+            payment_method: 'bank_transfer',
+            amount: 0,
+            currency: 'ARS',
+            status: 'pending',
+            bank_receipt_url: fileName,
+            bank_reference_number: bankReference.trim() || null,
+          });
+        if (insertErr) throw insertErr;
       }
 
-      const { data, error: uploadError } = await supabase.functions.invoke('upload-bank-receipt', {
-        body: formData,
-      });
-
-      if (uploadError) {
-        throw new Error(uploadError.message);
-      }
-
-      if (!data.success) {
-        throw new Error(data.error || 'Error al subir el comprobante');
-      }
+      // 3. Update order status to payment_review
+      await supabase
+        .from('orders')
+        .update({ status: 'payment_review', updated_at: new Date().toISOString() })
+        .eq('id', orderId);
 
       setSuccess(true);
       setFile(null);
