@@ -47,7 +47,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                 </div>
 
                 {/* Cart Items */}
-                <div className="flex-1 overflow-y-auto px-6">
+                <div className="flex-1 min-h-0 overflow-y-auto px-6">
                     {loading ? (
                         <div className="py-20 text-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold mx-auto mb-4"></div>
