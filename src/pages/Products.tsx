@@ -51,7 +51,7 @@ const Products = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-cream to-background">
+      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 bg-gradient-to-b from-cream to-background">
         <div className="container mx-auto px-6">
           <div className="text-center fade-in-section">
             <p className="text-xs uppercase tracking-[0.3em] text-gold font-body mb-3">
@@ -68,7 +68,7 @@ const Products = () => {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-12 md:py-16 bg-background">
         <div className="container mx-auto px-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm mb-6">
@@ -90,14 +90,14 @@ const Products = () => {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
               {products.map((product, i) => (
                 <div
                   key={product.id}
                   className="group fade-in-section"
                   style={{ transitionDelay: `${i * 0.1}s` }}
                 >
-                  <div className="relative overflow-hidden aspect-[3/4] bg-sand mb-6">
+                  <div className="relative overflow-hidden aspect-[3/4] bg-sand mb-4">
                     {product.image_url ? (
                       <img
                         src={product.image_url}
