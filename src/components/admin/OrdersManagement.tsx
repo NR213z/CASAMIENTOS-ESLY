@@ -137,6 +137,25 @@ export default function OrdersManagement() {
     );
   };
 
+  const getPaymentStatusBadge = (paymentStatus: string) => {
+    const statusMap: Record<string, { bg: string; text: string; label: string }> = {
+      pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Pendiente' },
+      approved: { bg: 'bg-green-100', text: 'text-green-800', label: 'Aprobado' },
+      completed: { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Completado' },
+      rejected: { bg: 'bg-red-100', text: 'text-red-800', label: 'Rechazado' },
+      cancelled: { bg: 'bg-gray-100', text: 'text-gray-800', label: 'Cancelado' },
+      payment_review: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'En Revisión' },
+    };
+
+    const config = statusMap[paymentStatus] || { bg: 'bg-gray-100', text: 'text-gray-800', label: paymentStatus };
+
+    return (
+      <span className={`px-2 py-1 text-xs font-medium rounded-full ${config.bg} ${config.text}`}>
+        {config.label}
+      </span>
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -224,7 +243,10 @@ export default function OrdersManagement() {
                     Total
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Estado
+                    Estado Pago
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Estado Pedido
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Fecha
@@ -254,6 +276,9 @@ export default function OrdersManagement() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       ${order.total.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {getPaymentStatusBadge(order.payment_status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {getStatusBadge(order.status)}
