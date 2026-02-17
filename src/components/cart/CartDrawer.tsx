@@ -54,15 +54,27 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                             <p className="text-warm-gray font-body text-sm">Cargando...</p>
                         </div>
                     ) : items.length === 0 ? (
-                        <div className="py-20 text-center">
-                            <p className="text-warm-gray font-body">
+                        <div className="flex flex-col items-center justify-center h-full py-20 text-center px-4">
+                            <div className="w-16 h-16 mb-6 rounded-full border-2 border-warm-gray/20 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-warm-gray/40">
+                                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                </svg>
+                            </div>
+                            <p className="text-foreground font-display text-lg mb-2">
                                 Tu carrito está vacío
                             </p>
+                            <p className="text-warm-gray/60 font-body text-sm mb-8">
+                                Explorá nuestros productos y encontrá algo especial
+                            </p>
                             <button
-                                onClick={onClose}
-                                className="mt-6 text-gold hover:text-gold/80 font-body text-sm underline"
+                                onClick={() => {
+                                    onClose();
+                                    navigate('/productos');
+                                }}
+                                className="bg-charcoal text-primary-foreground px-8 py-3 text-xs uppercase tracking-[0.2em] font-body hover:bg-charcoal/90 transition-colors"
                             >
-                                Continuar comprando
+                                Ver Productos
                             </button>
                         </div>
                     ) : (
