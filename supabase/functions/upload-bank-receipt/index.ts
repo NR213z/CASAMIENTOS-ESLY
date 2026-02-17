@@ -96,7 +96,7 @@ serve(async (req) => {
     // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabaseClient
       .storage
-      .from('payment-receipts')
+      .from('receipts')
       .upload(filePath, arrayBuffer, {
         contentType: file.type,
         upsert: false
@@ -113,11 +113,9 @@ serve(async (req) => {
       );
     }
 
-    // Get public URL
-    const { data: urlData } = supabaseClient
-      .storage
-      .from('payment-receipts')
-      .getPublicUrl(filePath);
+    // Store file path (not public URL — bucket is private, use signed URLs)
+    const filePath2 = uploadData?.path ?? filePath;
+    const urlData = { publicUrl: filePath2 };
 
     // Update payment record
     const { data: payment, error: paymentError } = await supabaseClient
@@ -137,7 +135,7 @@ serve(async (req) => {
           amount: 0, // Will be filled by admin
           currency: 'ARS',
           status: 'pending',
-          bank_receipt_url: urlData.publicUrl,
+          bank_receipt_url: filePath2,
           bank_reference_number: bankReferenceNumber || null
         });
 
@@ -149,7 +147,7 @@ serve(async (req) => {
       const { error: updateError } = await supabaseClient
         .from('payments')
         .update({
-          bank_receipt_url: urlData.publicUrl,
+          bank_receipt_url: filePath2,
           bank_reference_number: bankReferenceNumber || null,
           updated_at: new Date().toISOString()
         })
