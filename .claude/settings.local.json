@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit)",
+      "Bash(where:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix image preview using React state instead of DOM manipulation\n\nWhen editing a product with a broken image URL, the previous approach\nhid the img element via DOM which prevented new image previews from\nshowing. Now uses imageError state that resets when a new file is\nselected, so the preview works correctly.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(gh pr create --title \"Fix image preview and add error display\" --body \"$\\(cat <<''EOF''\n## Summary\n- Fix broken image preview in ProductForm when editing products with unavailable images \\(uses React state instead of DOM manipulation\\)\n- Add error display to public Products page for debugging Supabase RLS issues\n\n## Test plan\n- [ ] Edit a product with a broken image URL - should show \"Imagen anterior no disponible\" message\n- [ ] Select a new image file - preview should appear correctly\n- [ ] Check public Products page shows products \\(requires anon SELECT RLS policy in Supabase\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\" --base main --head claude/vibrant-poitras)",
+      "Bash(git fetch:*)",
+      "Bash(xargs:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(npm install:*)",
+      "Bash(gh pr create:*)"
+    ]
+  }
+}
