@@ -111,28 +111,6 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="w-full h-px bg-border my-8" />
-
-              <div className="flex gap-6">
-                <a
-                  href="https://www.instagram.com/rominaferraretto/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={22} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/rominaferraretto/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={22} />
-                </a>
-              </div>
             </div>
           </div>
         </div>
