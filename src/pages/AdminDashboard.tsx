@@ -133,82 +133,82 @@ const AdminDashboard = () => {
                             </button>
                         </div>
 
-                {loading ? (
-                    <div className="text-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
-                        <p className="text-warm-gray font-body">Cargando productos...</p>
-                    </div>
-                ) : products.length === 0 ? (
-                    <div className="text-center py-20 bg-background border border-gold/20 p-12">
-                        <p className="text-warm-gray font-body text-lg mb-4">
-                            No hay productos aún
-                        </p>
-                        <p className="text-warm-gray/70 font-body text-sm">
-                            Comienza agregando tu primer producto
-                        </p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map((product) => (
-                            <div
-                                key={product.id}
-                                className="bg-background border border-warm-gray/20 overflow-hidden hover:border-gold/40 transition-colors group"
-                            >
-                                <div className="aspect-[4/3] bg-sand relative overflow-hidden">
-                                    {product.image_url ? (
-                                        <img
-                                            src={product.image_url}
-                                            alt={product.name}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center">
-                                            <p className="text-warm-gray/40 font-display text-xl italic">
-                                                Sin imagen
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="font-display text-xl font-light text-foreground mb-2">
-                                        {product.name}
-                                    </h3>
-                                    {product.category && (
-                                        <p className="text-xs uppercase tracking-[0.15em] text-warm-gray font-body mb-1">
-                                            {product.category}
-                                        </p>
-                                    )}
-                                    <p className="text-lg text-gold font-body mb-1">
-                                        ${product.price.toLocaleString()}
-                                    </p>
-                                    {!product.in_stock && (
-                                        <p className="text-xs text-red-500 font-body mb-2">Sin stock</p>
-                                    )}
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => handleEdit(product)}
-                                            className="flex-1 flex items-center justify-center gap-2 border border-warm-gray/30 text-foreground px-4 py-2 text-xs uppercase tracking-[0.2em] font-body hover:border-gold hover:text-gold transition-colors"
-                                        >
-                                            <Edit size={14} />
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(product.id)}
-                                            className="flex-1 flex items-center justify-center gap-2 border border-red-200 text-red-600 px-4 py-2 text-xs uppercase tracking-[0.2em] font-body hover:bg-red-50 transition-colors"
-                                        >
-                                            <Trash2 size={14} />
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </div>
+                        {loading ? (
+                            <div className="text-center py-20">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold mx-auto mb-4"></div>
+                                <p className="text-warm-gray font-body">Cargando productos...</p>
                             </div>
-                        ))}
-                    </div>
-                )
+                        ) : products.length === 0 ? (
+                            <div className="text-center py-20 bg-background border border-gold/20 p-12">
+                                <p className="text-warm-gray font-body text-lg mb-4">
+                                    No hay productos aún
+                                </p>
+                                <p className="text-warm-gray/70 font-body text-sm">
+                                    Comienza agregando tu primer producto
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {products.map((product) => (
+                                    <div
+                                        key={product.id}
+                                        className="bg-background border border-warm-gray/20 overflow-hidden hover:border-gold/40 transition-colors group"
+                                    >
+                                        <div className="aspect-[4/3] bg-sand relative overflow-hidden">
+                                            {product.image_url ? (
+                                                <img
+                                                    src={product.image_url}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <p className="text-warm-gray/40 font-display text-xl italic">
+                                                        Sin imagen
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="p-6">
+                                            <h3 className="font-display text-xl font-light text-foreground mb-2">
+                                                {product.name}
+                                            </h3>
+                                            {product.category && (
+                                                <p className="text-xs uppercase tracking-[0.15em] text-warm-gray font-body mb-1">
+                                                    {product.category}
+                                                </p>
+                                            )}
+                                            <p className="text-lg text-gold font-body mb-1">
+                                                ${product.price.toLocaleString()}
+                                            </p>
+                                            {!product.in_stock && (
+                                                <p className="text-xs text-red-500 font-body mb-2">Sin stock</p>
+                                            )}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(product)}
+                                                    className="flex-1 flex items-center justify-center gap-2 border border-warm-gray/30 text-foreground px-4 py-2 text-xs uppercase tracking-[0.2em] font-body hover:border-gold hover:text-gold transition-colors"
+                                                >
+                                                    <Edit size={14} />
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(product.id)}
+                                                    className="flex-1 flex items-center justify-center gap-2 border border-red-200 text-red-600 px-4 py-2 text-xs uppercase tracking-[0.2em] font-body hover:bg-red-50 transition-colors"
+                                                >
+                                                    <Trash2 size={14} />
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </>
                 ) : (
                     <OrdersManagement />
-                )}}
+                )}
             </main>
 
             {/* Product Form Modal */}
