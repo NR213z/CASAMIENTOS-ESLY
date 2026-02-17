@@ -1,13 +1,25 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useScrollFadeIn } from "@/hooks/useScrollFadeIn";
 import { supabase, Product } from "@/lib/supabase";
+import { useCart } from "@/contexts/CartContext";
+import { ShoppingCart } from "lucide-react";
 
 const Products = () => {
   const containerRef = useScrollFadeIn();
+  const navigate = useNavigate();
+  const { addItem, itemCount } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+
+  const handleAddToCart = async (product: Product) => {
+    await addItem(product);
+    setAddedIds(prev => new Set(prev).add(product.id));
+    setTimeout(() => setAddedIds(prev => { const s = new Set(prev); s.delete(product.id); return s; }), 1500);
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -31,6 +43,19 @@ const Products = () => {
   return (
     <div ref={containerRef}>
       <Navbar />
+      {/* Cart Button Floating */}
+      {itemCount > 0 && (
+        <button
+          onClick={() => navigate('/carrito')}
+          className="fixed bottom-8 right-8 z-50 bg-charcoal text-primary-foreground flex items-center gap-3 px-6 py-4 shadow-lg hover:bg-charcoal/90 transition-colors"
+        >
+          <ShoppingCart size={18} />
+          <span className="font-body text-xs uppercase tracking-[0.2em]">Ver carrito</span>
+          <span className="bg-gold text-charcoal text-xs font-body w-5 h-5 rounded-full flex items-center justify-center font-medium">
+            {itemCount}
+          </span>
+        </button>
+      )}
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-cream to-background">
@@ -100,9 +125,25 @@ const Products = () => {
                         {product.category}
                       </p>
                     )}
-                    <p className="text-lg text-gold font-body">
+                    <p className="text-lg text-gold font-body mb-4">
                       ${product.price.toLocaleString()}
                     </p>
+                    {product.in_stock ? (
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className={`w-full py-3 text-xs uppercase tracking-[0.2em] font-body transition-colors ${
+                          addedIds.has(product.id)
+                            ? 'bg-gold text-charcoal'
+                            : 'bg-charcoal text-primary-foreground hover:bg-charcoal/90'
+                        }`}
+                      >
+                        {addedIds.has(product.id) ? '¡Agregado!' : 'Agregar al carrito'}
+                      </button>
+                    ) : (
+                      <p className="text-xs uppercase tracking-[0.2em] text-warm-gray/50 font-body py-3 border border-warm-gray/20">
+                        Sin stock
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
