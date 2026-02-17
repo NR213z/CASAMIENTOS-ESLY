@@ -98,7 +98,7 @@ const ContactSection = () => {
                   <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground mb-1">
                     Teléfono
                   </p>
-                  <p className="font-body text-foreground">+54 9 11 4025-3383</p>
+                  <p className="font-body text-foreground">+54 9 11 6907-4807</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -107,32 +107,10 @@ const ContactSection = () => {
                   <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground mb-1">
                     Email
                   </p>
-                  <p className="font-body text-foreground">romina@rominaferraretto.com</p>
+                  <p className="font-body text-foreground">boravivercelebrations@gmail.com</p>
                 </div>
               </div>
 
-              <div className="w-full h-px bg-border my-8" />
-
-              <div className="flex gap-6">
-                <a
-                  href="https://www.instagram.com/rominaferraretto/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={22} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/rominaferraretto/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-gold transition-colors duration-300"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={22} />
-                </a>
-              </div>
             </div>
           </div>
         </div>

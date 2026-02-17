@@ -72,7 +72,7 @@ const Navbar = () => {
           onClick={handleLogoClick}
           className="font-display text-xl tracking-wider text-foreground"
         >
-          Romina <span className="italic font-light">Ferraretto</span>
+          Bora <span className="italic font-light">Viver</span>
         </a>
 
         {/* Desktop */}
