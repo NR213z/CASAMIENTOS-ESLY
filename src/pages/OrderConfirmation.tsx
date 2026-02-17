@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { supabase, Order } from '../lib/supabase';
 import { CheckCircle, AlertCircle, Building2, Loader2, ArrowRight } from 'lucide-react';
 import ReceiptUpload from '../components/bank-transfer/ReceiptUpload';
+import { BANK_TRANSFER_DETAILS } from '../config/bankTransfer';
 
 interface LocationState {
   orderData?: {
@@ -187,23 +188,27 @@ export default function OrderConfirmation() {
             <div className="bg-white rounded-lg p-4 mb-4 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="font-medium text-gray-700">Banco:</span>
-                <span className="text-gray-900">Banco Ejemplo</span>
+                <span className="text-gray-900">{BANK_TRANSFER_DETAILS.bank}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium text-gray-700">Titular:</span>
-                <span className="text-gray-900">Esly Casamientos</span>
+                <span className="text-gray-900">{BANK_TRANSFER_DETAILS.titular}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium text-gray-700">CBU:</span>
-                <span className="text-gray-900 font-mono">0000000000000000000000</span>
+                <span className="text-gray-900 font-mono">{BANK_TRANSFER_DETAILS.cbu}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium text-gray-700">Alias:</span>
-                <span className="text-gray-900">ESLY.CASAMIENTOS</span>
+                <span className="text-gray-900">{BANK_TRANSFER_DETAILS.alias}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium text-gray-700">CUIT:</span>
-                <span className="text-gray-900">00-00000000-0</span>
+                <span className="font-medium text-gray-700">CUIL:</span>
+                <span className="text-gray-900">{BANK_TRANSFER_DETAILS.cuil}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium text-gray-700">Tipo de Cuenta:</span>
+                <span className="text-gray-900">{BANK_TRANSFER_DETAILS.accountType}</span>
               </div>
               <div className="flex justify-between border-t pt-2 mt-2">
                 <span className="font-bold text-gray-900">Monto a transferir:</span>
