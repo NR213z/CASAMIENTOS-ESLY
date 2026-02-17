@@ -8,6 +8,14 @@ type OrderWithPayment = Order & {
   items_count?: number;
 };
 
+// Extract file path from a bank_receipt_url (could be full URL or just a path)
+function extractFilePath(url: string): string {
+  if (!url.startsWith('http')) return url;
+  // Extract path after /object/public/payment-receipts/ or /object/public/receipts/
+  const match = url.match(/\/object\/(?:public|sign)\/(?:payment-receipts|receipts)\/(.+?)(?:\?|$)/);
+  return match ? match[1] : url;
+}
+
 export default function OrdersManagement() {
   const [orders, setOrders] = useState<OrderWithPayment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +23,7 @@ export default function OrdersManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>('all');
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchOrders();
@@ -73,6 +82,21 @@ export default function OrdersManagement() {
       );
 
       setOrders(ordersWithCounts);
+
+      // Generate signed URLs for all receipts
+      const urls: Record<string, string> = {};
+      for (const order of ordersWithCounts) {
+        if (order.payment?.bank_receipt_url) {
+          const filePath = extractFilePath(order.payment.bank_receipt_url);
+          const { data: signed } = await supabase.storage
+            .from('receipts')
+            .createSignedUrl(filePath, 60 * 60); // 1 hour
+          if (signed?.signedUrl) {
+            urls[order.id] = signed.signedUrl;
+          }
+        }
+      }
+      setSignedUrls(urls);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
@@ -249,9 +273,9 @@ export default function OrdersManagement() {
                         <Eye className="h-4 w-4 mr-1" />
                         Ver
                       </button>
-                      {order.payment_method === 'bank_transfer' && order.status === 'payment_review' && order.payment?.bank_receipt_url && (
+                      {order.payment_method === 'bank_transfer' && order.status === 'payment_review' && signedUrls[order.id] && (
                         <a
-                          href={order.payment.bank_receipt_url}
+                          href={signedUrls[order.id]}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="ml-4 text-blue-600 hover:text-blue-900 inline-flex items-center"

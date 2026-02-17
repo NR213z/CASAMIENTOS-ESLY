@@ -24,16 +24,21 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
     }
   }, [payment?.bank_receipt_url]);
 
-  const generateSignedUrl = async (filePath: string) => {
-    // If it's already a full URL (e.g. from older records), use it directly
-    if (filePath.startsWith('http')) {
-      setSignedReceiptUrl(filePath);
-      return;
+  const generateSignedUrl = async (rawUrl: string) => {
+    // Extract file path from full URL or use as-is if already a path
+    let filePath = rawUrl;
+    if (rawUrl.startsWith('http')) {
+      const match = rawUrl.match(/\/object\/(?:public|sign)\/(?:payment-receipts|receipts)\/(.+?)(?:\?|$)/);
+      filePath = match ? match[1] : rawUrl;
     }
-    const { data } = await supabase.storage
+    const { data, error } = await supabase.storage
       .from('receipts')
       .createSignedUrl(filePath, 60 * 60); // 1 hour
-    if (data?.signedUrl) setSignedReceiptUrl(data.signedUrl);
+    if (data?.signedUrl) {
+      setSignedReceiptUrl(data.signedUrl);
+    } else {
+      console.error('Failed to generate signed URL:', error);
+    }
   };
 
   const handleApprove = async () => {
