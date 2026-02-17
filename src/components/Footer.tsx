@@ -6,7 +6,7 @@ const Footer = () => {
           Bora <span className="italic font-light">Viver</span>
         </p>
         <p className="text-xs uppercase tracking-[0.3em] text-primary-foreground/40 font-body">
-          Social & Corporate Events
+          Eventos Sociales & Corporativos
         </p>
         <div className="w-8 h-px bg-gold/30 mx-auto my-6" />
         <p className="text-xs text-primary-foreground/30 font-body">
