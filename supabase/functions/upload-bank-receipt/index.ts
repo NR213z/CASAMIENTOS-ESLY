@@ -96,7 +96,7 @@ serve(async (req) => {
     // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabaseClient
       .storage
-      .from('receipts')
+      .from('payment-receipts')
       .upload(filePath, arrayBuffer, {
         contentType: file.type,
         upsert: false

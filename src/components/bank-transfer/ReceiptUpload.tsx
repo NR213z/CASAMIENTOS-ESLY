@@ -63,12 +63,12 @@ export default function ReceiptUpload({ orderId, onUploadSuccess }: ReceiptUploa
       setUploading(true);
       setError(null);
 
-      // 1. Upload file directly to 'receipts' bucket
+      // 1. Upload file directly to 'payment-receipts' bucket
       const fileExt = file.name.split('.').pop();
-      const fileName = `receipts/${orderId}_${crypto.randomUUID()}.${fileExt}`;
+      const fileName = `${orderId}_${crypto.randomUUID()}.${fileExt}`;
 
       const { error: storageError } = await supabase.storage
-        .from('receipts')
+        .from('payment-receipts')
         .upload(fileName, file, { contentType: file.type, upsert: false });
 
       if (storageError) throw new Error(`Error al subir archivo: ${storageError.message}`);

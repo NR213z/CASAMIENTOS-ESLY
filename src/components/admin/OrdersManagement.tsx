@@ -89,7 +89,7 @@ export default function OrdersManagement() {
         if (order.payment?.bank_receipt_url) {
           const filePath = extractFilePath(order.payment.bank_receipt_url);
           const { data: signed } = await supabase.storage
-            .from('receipts')
+            .from('payment-receipts')
             .createSignedUrl(filePath, 60 * 60); // 1 hour
           if (signed?.signedUrl) {
             urls[order.id] = signed.signedUrl;
