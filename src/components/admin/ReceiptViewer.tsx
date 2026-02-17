@@ -32,7 +32,7 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
       filePath = match ? match[1] : rawUrl;
     }
     const { data, error } = await supabase.storage
-      .from('receipts')
+      .from('payment-receipts')
       .createSignedUrl(filePath, 60 * 60); // 1 hour
     if (data?.signedUrl) {
       setSignedReceiptUrl(data.signedUrl);
