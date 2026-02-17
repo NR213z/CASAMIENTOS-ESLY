@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Check, XCircle, Loader2, FileText, ExternalLink } from 'lucide-react';
 import { supabase, Order, Payment } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,6 +16,25 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
   const [loading, setLoading] = useState(false);
   const [rejecting, setRejecting] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
+  const [signedReceiptUrl, setSignedReceiptUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (payment?.bank_receipt_url) {
+      generateSignedUrl(payment.bank_receipt_url);
+    }
+  }, [payment?.bank_receipt_url]);
+
+  const generateSignedUrl = async (filePath: string) => {
+    // If it's already a full URL (e.g. from older records), use it directly
+    if (filePath.startsWith('http')) {
+      setSignedReceiptUrl(filePath);
+      return;
+    }
+    const { data } = await supabase.storage
+      .from('receipts')
+      .createSignedUrl(filePath, 60 * 60); // 1 hour
+    if (data?.signedUrl) setSignedReceiptUrl(data.signedUrl);
+  };
 
   const handleApprove = async () => {
     if (!payment || !user) return;
@@ -85,8 +104,9 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
     }
   };
 
-  const isImage = payment?.bank_receipt_url?.match(/\.(jpg|jpeg|png|webp|gif)$/i);
-  const isPDF = payment?.bank_receipt_url?.match(/\.pdf$/i);
+  const receiptUrl = signedReceiptUrl || payment?.bank_receipt_url || null;
+  const isImage = receiptUrl?.match(/\.(jpg|jpeg|png|webp|gif)(\?|$)/i);
+  const isPDF = receiptUrl?.match(/\.pdf(\?|$)/i);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -173,7 +193,7 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
           )}
 
           {/* Receipt Viewer */}
-          {payment?.bank_receipt_url ? (
+          {receiptUrl ? (
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-3 flex items-center">
                 <FileText className="h-5 w-5 mr-2 text-blue-600" />
@@ -183,7 +203,7 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
               {isImage ? (
                 <div className="border border-gray-300 rounded-lg overflow-hidden">
                   <img
-                    src={payment.bank_receipt_url}
+                    src={receiptUrl}
                     alt="Comprobante"
                     className="w-full h-auto max-h-[500px] object-contain"
                   />
@@ -193,7 +213,7 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
                   <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600 mb-4">Archivo PDF</p>
                   <a
-                    href={payment.bank_receipt_url}
+                    href={receiptUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -207,7 +227,7 @@ export default function ReceiptViewer({ order, payment, onClose, onApprove, onRe
                   <FileText className="h-12 w-12 text-gray-400 mx-auto mb-2" />
                   <p>Formato de archivo no compatible para vista previa</p>
                   <a
-                    href={payment.bank_receipt_url}
+                    href={receiptUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
