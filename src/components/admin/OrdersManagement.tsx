@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, Order, Payment } from '../../lib/supabase';
-import { Package, Eye, Filter, Search, Loader2, ExternalLink } from 'lucide-react';
+import { Package, Eye, Filter, Search, Loader2, ExternalLink, Trash2 } from 'lucide-react';
 import ReceiptViewer from './ReceiptViewer';
 
 type OrderWithPayment = Order & {
@@ -156,6 +156,29 @@ export default function OrdersManagement() {
     );
   };
 
+  const isDeleteableStatus = (status: string): boolean => {
+    const nonDeletableStatuses = ['pending_payment', 'payment_processing', 'payment_review'];
+    return !nonDeletableStatuses.includes(status);
+  };
+
+  const handleDeleteOrder = async (orderId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar este pedido? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('orders').delete().eq('id', orderId);
+
+      if (error) throw error;
+
+      // Remove order from local state
+      setOrders(orders.filter(order => order.id !== orderId));
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      alert('Error al eliminar el pedido. Por favor intenta de nuevo.');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -308,6 +331,15 @@ export default function OrdersManagement() {
                           <ExternalLink className="h-4 w-4 mr-1" />
                           Comprobante
                         </a>
+                      )}
+                      {isDeleteableStatus(order.status) && (
+                        <button
+                          onClick={() => handleDeleteOrder(order.id)}
+                          className="ml-4 text-red-600 hover:text-red-900 inline-flex items-center"
+                          title="Eliminar pedido"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       )}
                     </td>
                   </tr>
