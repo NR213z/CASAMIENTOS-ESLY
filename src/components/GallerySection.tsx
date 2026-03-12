@@ -3,13 +3,21 @@ import gallery2 from "@/assets/new_images/boda2.jpg";
 import gallery3 from "@/assets/new_images/boda3.jpg";
 import gallery4 from "@/assets/new_images/boda4.jpg";
 import gallery5 from "@/assets/new_images/boda5.jpg";
+import gallery6 from "@/assets/new_images/boda6.jpg";
+import gallery7 from "@/assets/new_images/boda7.jpg";
+import gallery8 from "@/assets/new_images/boda8.jpg";
+import gallery9 from "@/assets/new_images/boda9.jpg";
 
 const images = [
-  { src: gallery1, alt: "Boda elegante", className: "md:col-span-1 md:row-span-2" },
+  { src: gallery1, alt: "Boda elegante",        className: "md:col-span-1 md:row-span-2" },
   { src: gallery2, alt: "Celebración especial", className: "md:col-span-1" },
-  { src: gallery3, alt: "Evento inolvidable", className: "md:col-span-1 md:row-span-2" },
-  { src: gallery4, alt: "Detalle decorativo", className: "md:col-span-1" },
-  { src: gallery5, alt: "Momento único", className: "md:col-span-1" },
+  { src: gallery3, alt: "Evento inolvidable",   className: "md:col-span-1 md:row-span-2" },
+  { src: gallery4, alt: "Detalle decorativo",   className: "md:col-span-1" },
+  { src: gallery5, alt: "Momento único",        className: "md:col-span-1" },
+  { src: gallery6, alt: "Ambiente festivo",     className: "md:col-span-1" },
+  { src: gallery7, alt: "Decoración floral",    className: "md:col-span-1 md:row-span-2" },
+  { src: gallery8, alt: "Equipo en acción",     className: "md:col-span-1" },
+  { src: gallery9, alt: "Brindis especial",     className: "md:col-span-1" },
 ];
 
 const GallerySection = () => {
