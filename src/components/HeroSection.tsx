@@ -1,13 +1,45 @@
-import heroBg from "@/assets/new_images/hero_bg.png";
+import { useEffect, useState } from "react";
+import heroBg1 from "@/assets/new_images/hero_bg.png";
+import heroBg2 from "@/assets/new_images/hero_bg2.jpg";
+import heroBg3 from "@/assets/new_images/hero_bg3.jpg";
+import heroBg4 from "@/assets/new_images/hero_bg4.jpg";
+
+const images = [heroBg1, heroBg2, heroBg3, heroBg4];
 
 const HeroSection = () => {
+  const [current, setCurrent] = useState(0);
+  const [fading, setFading] = useState(false);
+
+  const goTo = (index: number) => {
+    setFading(true);
+    setTimeout(() => {
+      setCurrent(index);
+      setFading(false);
+    }, 700);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setCurrent((prev) => (prev + 1) % images.length);
+        setFading(false);
+      }, 700);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="inicio" className="relative h-screen w-full overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src={heroBg}
-          alt="Evento elegante al atardecer"
+          src={images[current]}
+          alt="Evento elegante"
           className="w-full h-full object-cover"
+          style={{
+            transition: "opacity 0.7s ease-in-out",
+            opacity: fading ? 0 : 1,
+          }}
           loading="eager"
         />
         <div className="absolute inset-0 bg-charcoal/40" />
@@ -41,6 +73,22 @@ const HeroSection = () => {
         >
           Agendar Consulta
         </a>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`rounded-full transition-all duration-300 ${
+              i === current
+                ? "w-5 h-1.5 bg-white"
+                : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
+            }`}
+            aria-label={`Ir a imagen ${i + 1}`}
+          />
+        ))}
       </div>
 
       {/* Scroll indicator */}

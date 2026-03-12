@@ -15,9 +15,9 @@ const Index = () => {
     <div ref={containerRef}>
       <Navbar />
       <HeroSection />
+      <AboutSection />
       <ServicesSection />
       <GallerySection />
-      <AboutSection />
       <TestimonialsSection />
       <ContactSection />
       <Footer />
