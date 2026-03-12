@@ -8,43 +8,38 @@ const images = [heroBg1, heroBg2, heroBg3, heroBg4];
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
-  const [fading, setFading] = useState(false);
 
-  const goTo = (index: number) => {
-    setFading(true);
-    setTimeout(() => {
-      setCurrent(index);
-      setFading(false);
-    }, 700);
-  };
+  const goTo = (index: number) => setCurrent(index);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setCurrent((prev) => (prev + 1) % images.length);
-        setFading(false);
-      }, 700);
+      setCurrent((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <section id="inicio" className="relative h-screen w-full overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src={images[current]}
-          alt="Evento elegante"
-          className="w-full h-full object-cover"
-          style={{
-            transition: "opacity 0.7s ease-in-out",
-            opacity: fading ? 0 : 1,
-          }}
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-charcoal/40" />
-      </div>
+      {/* All images stacked, only current visible */}
+      {images.map((src, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: i === current ? 1 : 0 }}
+        >
+          <img
+            src={src}
+            alt={`Evento elegante ${i + 1}`}
+            className="w-full h-full object-cover"
+            loading={i === 0 ? "eager" : "lazy"}
+          />
+        </div>
+      ))}
 
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-charcoal/40 z-[1]" />
+
+      {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
         <p
           className="text-xs uppercase tracking-[0.4em] text-primary-foreground/80 font-body mb-4 animate-fade-in"
@@ -92,7 +87,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in" style={{ animationDelay: "1.5s" }}>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-fade-in" style={{ animationDelay: "1.5s" }}>
         <div className="w-px h-12 bg-primary-foreground/40 mx-auto mb-2" />
         <p className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/50 font-body">
           Deslizar
