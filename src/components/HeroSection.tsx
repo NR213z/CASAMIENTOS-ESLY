@@ -71,12 +71,12 @@ const HeroSection = () => {
       </div>
 
       {/* Dot indicators */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-20">
         {images.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            className={`rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 p-2 box-content ${
               i === current
                 ? "w-5 h-1.5 bg-white"
                 : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
