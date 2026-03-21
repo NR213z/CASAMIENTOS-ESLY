@@ -15,7 +15,7 @@ const Products = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    let cancelled = false;
 
     const fetchProducts = async () => {
       setLoading(true);
@@ -23,13 +23,11 @@ const Products = () => {
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .order('created_at', { ascending: false })
-        .abortSignal(abortController.signal);
+        .order('created_at', { ascending: false });
+
+      if (cancelled) return;
 
       if (error) {
-        if (error.message?.includes('AbortError') || abortController.signal.aborted) {
-          return;
-        }
         setError(error.message);
       } else {
         setProducts(data || []);
@@ -40,7 +38,7 @@ const Products = () => {
     fetchProducts();
 
     return () => {
-      abortController.abort();
+      cancelled = true;
     };
   }, []);
 
