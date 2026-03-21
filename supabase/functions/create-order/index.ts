@@ -37,6 +37,12 @@ serve(async (req) => {
     const orderRequest: OrderRequest = await req.json();
 
     // Validate request
+    // MercadoPago deshabilitado temporalmente - solo transferencia bancaria
+    const ENABLED_PAYMENT_METHODS = ['bank_transfer'];
+    if (!ENABLED_PAYMENT_METHODS.includes(orderRequest.payment_method)) {
+      throw new Error('Método de pago no disponible. Por favor usa transferencia bancaria.');
+    }
+
     if (!orderRequest.items || orderRequest.items.length === 0) {
       throw new Error('El carrito está vacío');
     }

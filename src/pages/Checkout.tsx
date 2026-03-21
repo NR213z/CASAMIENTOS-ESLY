@@ -21,7 +21,7 @@ const checkoutSchema = z.object({
     .regex(/^[0-9+\-\s()]+$/, 'El teléfono solo puede contener números, +, -, espacios y paréntesis'),
   payment_method: z.enum(['mercadopago', 'bank_transfer'], {
     required_error: 'Debes seleccionar un método de pago'
-  }),
+  }).default('bank_transfer'),
   customer_notes: z.string().max(500, 'Las notas son muy largas').optional()
 });
 
@@ -40,7 +40,7 @@ export default function Checkout() {
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      payment_method: 'mercadopago'
+      payment_method: 'bank_transfer'
     }
   });
 
@@ -250,7 +250,7 @@ export default function Checkout() {
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Método de Pago</h2>
 
                 <div className="space-y-3">
-                  {/* Mercado Pago */}
+                  {/* Mercado Pago - Oculto temporalmente, descomentar cuando se habilite
                   <label
                     className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
                       selectedPaymentMethod === 'mercadopago'
@@ -272,6 +272,7 @@ export default function Checkout() {
                       </div>
                     </div>
                   </label>
+                  */}
 
                   {/* Bank Transfer */}
                   <label
@@ -324,12 +325,7 @@ export default function Checkout() {
                     Procesando...
                   </>
                 ) : (
-                  <>
-                    {selectedPaymentMethod === 'mercadopago'
-                      ? 'Continuar al Pago'
-                      : 'Confirmar Pedido'
-                    }
-                  </>
+                  <>Confirmar Pedido</>
                 )}
               </button>
 

@@ -15,7 +15,33 @@ const Products = () => {
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError('');
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .abortSignal(abortController.signal);
+
+      if (error) {
+        if (error.message?.includes('AbortError') || abortController.signal.aborted) {
+          return;
+        }
+        setError(error.message);
+      } else {
+        setProducts(data || []);
+      }
+      setLoading(false);
+    };
+
     fetchProducts();
+
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   const handleAddToCart = async (productId: string) => {
@@ -28,22 +54,6 @@ const Products = () => {
     } finally {
       setAddingToCart(null);
     }
-  };
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    setError('');
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setProducts(data || []);
-    }
-    setLoading(false);
   };
 
   return (
