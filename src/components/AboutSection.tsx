@@ -27,13 +27,13 @@ const AboutSection = () => {
             </h2>
             <div className="w-12 h-px bg-gold mb-8" />
             <p className="text-sm md:text-base font-body font-light text-muted-foreground leading-relaxed mb-6">
-              Creamos eventos que inspiran, emocionan y dejan recuerdos inolvidables. Nos especializamos en la planificación, producción y diseño integral de experiencias que conectan a las personas y fortalecen los vínculos.
+              Somos una pareja que decidió unir el amor, los sueños y la creatividad para dar vida a esta empresa.
             </p>
             <p className="text-sm md:text-base font-body font-light text-muted-foreground leading-relaxed mb-6">
-              Organizamos una amplia variedad de eventos corporativos y sociales: Fiestas de Fin de Año, Conferencias, Workshops, Lanzamientos de Productos, Team Building, Jornadas de Integración, Inauguraciones, Family Days, Aniversarios Corporativos, celebraciones del Día del Niño, Puertas Abiertas, Eventos Virtuales y mucho más.
+              Cada evento que realizamos lleva dedicación, sensibilidad y un profundo respeto por las historias que se celebran.
             </p>
             <p className="text-sm md:text-base font-body font-light text-muted-foreground leading-relaxed mb-8">
-              Cada proyecto es único y lo desarrollamos cuidando cada detalle para lograr experiencias memorables.
+              Creamos ambientes que hablan de vos, de tu momento y de lo que querés recordar para siempre.
             </p>
             <p className="font-serif text-xl italic text-foreground/80 mb-4">
               "Tú historia es nuestra historia"
