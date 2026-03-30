@@ -6,18 +6,6 @@ const testimonials = [
     name: "Florencia Pérez",
     text: "Desde el primer encuentro nos dio la seguridad que queríamos. Todo fue super planificado y detallado. El día de nuestra boda fue uno de los días más increíbles de nuestras vidas. ¡La recomendamos 100%!",
   },
-  {
-    name: "Jen Gonzalez",
-    text: "Romi y su equipo fueron A++. Todo estuvo planificado y previsto desde el primer día. Transmite un nivel de profesionalismo y confianza que realmente te permite relajarte. Si estás considerando a Romi, no lo dudes.",
-  },
-  {
-    name: "Sol Espinosa",
-    text: "Romi tuvo en cuenta cada cosa que pedimos, se adelantaba a nuestras necesidades. Nos quedamos con un hermoso recuerdo y una amiga querida que logró que disfrutáramos todo el proceso.",
-  },
-  {
-    name: "Gabriela Salgado",
-    text: "Hicimos un destination wedding y todo estuvo perfecto. No necesité estar presente para ningún detalle. 100% mi mejor inversión para tener paz mental. Romi es súper simpática y sabe exactamente lo que cada novia quiere.",
-  },
 ];
 
 const TestimonialsSection = () => {
