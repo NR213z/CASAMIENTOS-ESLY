@@ -4,7 +4,8 @@ import { supabase, Product } from '@/lib/supabase';
 import ProductForm from '@/components/ProductForm';
 import OrdersManagement from '@/components/admin/OrdersManagement';
 import LowStockAlert from '@/components/admin/LowStockAlert';
-import { LogOut, Plus, Edit, Trash2, Package, ShoppingBag } from 'lucide-react';
+import ContactMessages from '@/components/admin/ContactMessages';
+import { LogOut, Plus, Edit, Trash2, Package, ShoppingBag, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -14,11 +15,21 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-    const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
+    const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'messages'>('products');
+    const [unreadMessages, setUnreadMessages] = useState(0);
 
     useEffect(() => {
         fetchProducts();
+        fetchUnreadCount();
     }, []);
+
+    const fetchUnreadCount = async () => {
+        const { count } = await supabase
+            .from('contact_messages')
+            .select('*', { count: 'exact', head: true })
+            .eq('read', false);
+        setUnreadMessages(count || 0);
+    };
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -114,6 +125,25 @@ const AdminDashboard = () => {
                         <Package size={16} />
                         Pedidos
                     </button>
+                    <button
+                        onClick={() => {
+                            setActiveTab('messages');
+                            fetchUnreadCount();
+                        }}
+                        className={`flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-[0.2em] font-body transition-colors border-b-2 relative ${
+                            activeTab === 'messages'
+                                ? 'border-gold text-foreground'
+                                : 'border-transparent text-warm-gray hover:text-foreground'
+                        }`}
+                    >
+                        <Mail size={16} />
+                        Mensajes
+                        {unreadMessages > 0 && (
+                            <span className="ml-1 bg-gold text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full tracking-normal">
+                                {unreadMessages}
+                            </span>
+                        )}
+                    </button>
                 </div>
 
                 {activeTab === 'products' ? (
@@ -206,8 +236,10 @@ const AdminDashboard = () => {
                             </div>
                         )}
                     </>
-                ) : (
+                ) : activeTab === 'orders' ? (
                     <OrdersManagement />
+                ) : (
+                    <ContactMessages />
                 )}
             </main>
 
