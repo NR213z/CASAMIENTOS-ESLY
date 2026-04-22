@@ -1,18 +1,45 @@
 import { useState } from "react";
-import { Instagram, Linkedin, Mail, Phone } from "lucide-react";
+import { Instagram, Linkedin, Mail, Phone, Loader2, CheckCircle } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Would handle form submission
-    alert("¡Gracias por tu mensaje! Te contactaremos pronto.");
-    setForm({ name: "", email: "", phone: "", message: "" });
+    setError("");
+    setSuccess(false);
+    setLoading(true);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('contact_messages')
+        .insert([{
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim() || null,
+          message: form.message.trim(),
+        }]);
+
+      if (insertError) throw insertError;
+
+      setSuccess(true);
+      setForm({ name: "", email: "", phone: "", message: "" });
+
+      // Reset success message after 5 seconds
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (err: any) {
+      setError(err.message || "Error al enviar el mensaje. Intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,6 +57,20 @@ const ContactSection = () => {
         <div className="grid md:grid-cols-2 gap-16 max-w-5xl mx-auto">
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6 fade-in-section">
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 flex items-start gap-3">
+                <CheckCircle size={20} className="shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-body font-medium">¡Mensaje enviado!</p>
+                  <p className="text-xs font-body mt-1">Te contactaremos pronto.</p>
+                </div>
+              </div>
+            )}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm font-body">
+                {error}
+              </div>
+            )}
             <div>
               <label className="block text-xs uppercase tracking-[0.2em] font-body text-muted-foreground mb-2">
                 Nombre
@@ -83,9 +124,11 @@ const ContactSection = () => {
             </div>
             <button
               type="submit"
-              className="border border-foreground text-foreground px-10 py-4 text-xs uppercase tracking-[0.3em] font-body hover:bg-foreground hover:text-background transition-all duration-500 mt-4"
+              disabled={loading}
+              className="border border-foreground text-foreground px-10 py-4 text-xs uppercase tracking-[0.3em] font-body hover:bg-foreground hover:text-background transition-all duration-500 mt-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
             >
-              Enviar Mensaje
+              {loading && <Loader2 className="animate-spin" size={14} />}
+              {loading ? "Enviando..." : "Enviar Mensaje"}
             </button>
           </form>
 
